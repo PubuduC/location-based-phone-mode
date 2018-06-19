@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/graph"
+            android:icon="@drawable/ic_grid_on_black_24dp"
+            android:title="Graph" />
+
+        <item
+            android:id="@+id/location_point"
+            android:icon="@drawable/ic_location_on_black_24dp"
+            android:title="Location" />
+
+    </group>
+
+    <item android:title="Setup">
+        <menu>
+            <item
+                android:id="@+id/beacon_setup"
+                android:icon="@drawable/ic_phonelink_setup_black_24dp"
+                android:title="Settings" />
+            <item
+                android:id="@+id/check_beacons"
+                android:icon="@drawable/ic_router_black_24dp"
+                android:title="Beacons" />
+        </menu>
+    </item>
+
+</menu>

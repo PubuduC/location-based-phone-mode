@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.SettingsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10pt"
+            android:text="Change beacon coordinates"
+            android:layout_marginLeft="5pt"
+            android:layout_marginTop="10pt"
+            />
+
+        <TextView
+            android:id="@+id/beacon1_lable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:layout_marginLeft="5pt"
+            android:layout_marginTop="15pt"
+            android:text="Beacon 1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginLeft="10pt">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"
+                android:text="major :" />
+
+            <EditText
+                android:id="@+id/beacon1_major_value"
+                android:layout_width="100pt"
+                android:layout_height="wrap_content"
+                android:hint="Major value"
+                android:ems="10"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginLeft="20pt">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"
+                android:text="X :" />
+
+            <EditText
+                android:id="@+id/beacon1_x_value"
+                android:layout_width="70pt"
+                android:layout_height="wrap_content"
+                android:hint="X"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"
+                android:text="Y :" />
+            <EditText
+                android:id="@+id/beacon1_y_value"
+                android:layout_width="70pt"
+                android:layout_height="wrap_content"
+                android:hint="Y"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/beacon2_lable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:layout_marginTop="10pt"
+            android:layout_marginLeft="5pt"
+            android:text="Beacon 2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginLeft="10pt">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"
+                android:text="major :" />
+            <EditText
+                android:id="@+id/beacon2_major_value"
+                android:layout_width="100pt"
+                android:layout_height="wrap_content"
+                android:hint="Major value"
+                android:ems="10"
+                android:inputType="number" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginLeft="20pt">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"
+                android:text="X :" />
+            <EditText
+                android:id="@+id/beacon2_x_value"
+                android:layout_width="70pt"
+                android:layout_height="wrap_content"
+                android:hint="X"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"
+                android:text="Y :" />
+            <EditText
+                android:id="@+id/beacon2_y_value"
+                android:layout_width="70pt"
+                android:layout_height="wrap_content"
+                android:hint="Y"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/beacon3_lable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:layout_marginTop="10pt"
+            android:layout_marginLeft="5pt"
+            android:text="Beacon 3" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginLeft="10pt">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"
+                android:text="major :" />
+            <EditText
+                android:id="@+id/beacon3_major_value"
+                android:layout_width="100pt"
+                android:layout_height="wrap_content"
+                android:hint="major"
+                android:ems="10"
+                android:layout_marginLeft="10pt"
+                android:inputType="number" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginLeft="20pt">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"
+                android:text="X :" />
+            <EditText
+                android:id="@+id/beacon3_x_value"
+                android:layout_width="70pt"
+                android:layout_height="wrap_content"
+                android:hint="X"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9pt"
+                android:text="Y :" />
+            <EditText
+                android:id="@+id/beacon3_y_value"
+                android:layout_width="70pt"
+                android:layout_height="wrap_content"
+                android:hint="Y"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/save_settings_btn"
+            android:layout_marginTop="10pt"
+            android:layout_height="wrap_content"
+            android:text="Update Positions"
+            android:layout_width="fill_parent">
+        </Button>
+
+    </LinearLayout>
+
+</FrameLayout>

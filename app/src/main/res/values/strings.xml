@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">LocationFinder</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="b1_major">b1_major</string>
+    <string name="b2_major">b2_major</string>
+    <string name="b3_major">b3_major</string>
+
+    <string name="b1_x">b1_x</string>
+    <string name="b2_x">b2_x</string>
+    <string name="b3_x">b3_x</string>
+
+    <string name="b1_y">b1_y</string>
+    <string name="b2_y">b2_y</string>
+    <string name="b3_y">b3_y</string>
+
+</resources>
