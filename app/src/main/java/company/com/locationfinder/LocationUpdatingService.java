@@ -75,7 +75,7 @@ public class LocationUpdatingService {
                 distanceFormB1,distanceFormB2,distanceFormB3
         );
 
-        if (currentLocation.getX()!=NaN){
+        if (!Double.isNaN(currentLocation.getX())){
             pointX=currentLocation.getX();
             pointY=currentLocation.getY();
         }
