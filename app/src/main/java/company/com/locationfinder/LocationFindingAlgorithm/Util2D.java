@@ -1,6 +1,11 @@
 package company.com.locationfinder.LocationFindingAlgorithm;
 
+import java.text.DecimalFormat;
+
 public class Util2D {
+
+
+    private static DecimalFormat df=new DecimalFormat("#.###");
 
     public static Coordinate2D shiftXY_intoOrigin(Coordinate2D pointToBeShifted,double shiftingValueX,double shiftingValueY){
        return new Coordinate2D(pointToBeShifted.getX()-shiftingValueX,pointToBeShifted.getY()-shiftingValueY);
@@ -48,4 +53,7 @@ public class Util2D {
         return new Coordinate2D(x,y);
     }
 
+    public static Double round3deci(double x){
+        return Double.valueOf(df.format(x));
+    }
 }

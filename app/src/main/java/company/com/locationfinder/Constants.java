@@ -2,8 +2,6 @@ package company.com.locationfinder;
 
 public final class Constants {
 
-    public static String SHARED_PREFERENCES ="AppPreferences";
-
     public static String b1_major="b1_major";
     public static String b2_major="b2_major";
     public static String b3_major="b3_major";

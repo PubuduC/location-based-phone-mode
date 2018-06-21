@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds.Organization;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,10 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import company.com.locationfinder.Constants;
+import company.com.locationfinder.LocationUpdatingService;
 import company.com.locationfinder.MainActivity;
 import company.com.locationfinder.R;
-
-import static company.com.locationfinder.Constants.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -83,7 +83,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        sharedpreferences=getActivity().getSharedPreferences(SHARED_PREFERENCES,Context.MODE_PRIVATE);
+        sharedpreferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
 
@@ -270,6 +270,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         writeSharedPreferences("b3_y",b3_y);
 
         Log.d(TAG,"Beacon positions and major keys changed");
+
+        LocationUpdatingService.updateBeaconKeysAndCoordinates();
 
         ((MainActivity)getActivity()).navigateToGraph();
 

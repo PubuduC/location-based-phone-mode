@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,24 +13,18 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.ScatterChart;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import company.com.locationfinder.Constants;
 import company.com.locationfinder.Graph.GraphMakerXY;
 import company.com.locationfinder.LocationFindingAlgorithm.Coordinate2D;
+import company.com.locationfinder.LocationUpdatingService;
 import company.com.locationfinder.R;
 
-import static company.com.locationfinder.Constants.SHARED_PREFERENCES;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GraphFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link GraphFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class GraphFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -39,6 +35,8 @@ public class GraphFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private SharedPreferences sharedpreferences;
+
+    View view;
 
     public GraphFragment() {
         // Required empty public constructor
@@ -69,7 +67,7 @@ public class GraphFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        sharedpreferences=getActivity().getSharedPreferences(SHARED_PREFERENCES,Context.MODE_PRIVATE);
+        sharedpreferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
 
@@ -77,7 +75,7 @@ public class GraphFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_graph, container, false);
+        view= inflater.inflate(R.layout.fragment_graph, container, false);
 
 
 
@@ -93,10 +91,54 @@ public class GraphFragment extends Fragment {
 
         GraphMakerXY.drawGraph((ScatterChart)view.findViewById(R.id.chart),beacon_1,beacon_2,beacon_3);
 
-
+        startTimer();
 
         return view;
     }
+
+    private Timer mTimer1;
+    private TimerTask mTt1;
+    private Handler mTimerHandler = new Handler();
+
+    private void stopTimer(){
+        if(mTimer1 != null){
+            mTimer1.cancel();
+            mTimer1.purge();
+        }
+    }
+
+    private void startTimer(){
+        mTimer1 = new Timer();
+        mTt1 = new TimerTask() {
+            public void run() {
+                mTimerHandler.post(new Runnable() {
+                    public void run(){
+                        showPoint();
+                    }
+                });
+            }
+        };
+
+        mTimer1.schedule(mTt1, 1, 1000);
+    }
+
+    private void showPoint(){
+
+
+        Coordinate2D beacon_1 = new Coordinate2D(readSharedPreferences_float(Constants.b1_x),
+                readSharedPreferences_float(Constants.b1_y));
+
+        Coordinate2D beacon_2 = new Coordinate2D(readSharedPreferences_float(Constants.b2_x),
+                readSharedPreferences_float(Constants.b2_y));
+
+        Coordinate2D beacon_3 = new Coordinate2D(readSharedPreferences_float(Constants.b3_x),
+                readSharedPreferences_float(Constants.b3_y));
+
+        GraphMakerXY.drawGraph((ScatterChart)view.findViewById(R.id.chart),beacon_1,beacon_2,beacon_3);
+
+        GraphMakerXY.addPoint(new Coordinate2D(LocationUpdatingService.pointX,LocationUpdatingService.pointY));
+    }
+
 
 
     private float readSharedPreferences_float(String key){
@@ -138,16 +180,7 @@ public class GraphFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(String title);

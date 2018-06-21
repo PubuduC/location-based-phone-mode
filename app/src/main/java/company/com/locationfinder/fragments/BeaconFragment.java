@@ -11,9 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import company.com.locationfinder.BeaconManager.BeaconData;
+import company.com.locationfinder.BeaconManager.BeaconWrapper;
 import company.com.locationfinder.R;
-import company.com.locationfinder.fragments.dummy.DummyContent;
-import company.com.locationfinder.fragments.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,8 @@ public class BeaconFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyBeaconRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            ArrayList<BeaconWrapper> bwrapers = new ArrayList<BeaconWrapper>(BeaconData.getBeaconWrapers().values());
+            recyclerView.setAdapter(new MyBeaconRecyclerViewAdapter(bwrapers, mListener));
         }
         startTimer();
         return view;
@@ -99,24 +100,23 @@ public class BeaconFragment extends Fragment {
             public void run() {
                 mTimerHandler.post(new Runnable() {
                     public void run(){
-                        showData();
+                        updateAndShowData();
                     }
                 });
             }
         };
 
-        mTimer1.schedule(mTt1, 1, 1000);
+        mTimer1.schedule(mTt1, 1, 500);
     }
 
-    private void showData(){
+    /*
+    run this method continuously to update
+     */
+    private void updateAndShowData(){
 
-        List<DummyItem> items = new ArrayList<DummyItem>();
-        items.add(new DummyItem("1", String.valueOf(System.currentTimeMillis()),""));
-        items.add(new DummyItem("2", String.valueOf(System.currentTimeMillis()),""));
-        items.add(new DummyItem("3", String.valueOf(System.currentTimeMillis()),""));
+        List<BeaconWrapper> bwrapers = new ArrayList<BeaconWrapper>(BeaconData.getBeaconWrapers().values());
 
-
-        recyclerView.setAdapter(new MyBeaconRecyclerViewAdapter(items, mListener));
+        recyclerView.setAdapter(new MyBeaconRecyclerViewAdapter(bwrapers, mListener));
     }
 
 
@@ -155,6 +155,6 @@ public class BeaconFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(BeaconWrapper item);
     }
 }

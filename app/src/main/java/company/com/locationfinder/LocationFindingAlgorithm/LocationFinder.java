@@ -1,8 +1,10 @@
 package company.com.locationfinder.LocationFindingAlgorithm;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class LocationFinder {
+
 
     private static double angle;
 
@@ -24,9 +26,13 @@ public class LocationFinder {
 
         Coordinate2D relativeLocation = getRelativeLocation(shiftedAndRotatedBeacons, r1_fromB1, r2_fromB2, r3_fromB3);
 
-        Coordinate2D LocationEstimated = resolveCondition1(relativeLocation, beacon_1_position.getX(), beacon_1_position.getY(), angle);
+        Coordinate2D conditionOneResolved = resolveCondition1(relativeLocation, beacon_1_position.getX(), beacon_1_position.getY(), angle);
 
-        return LocationEstimated;
+//        Coordinate2D location  = Util2D.rotateAntiClockwiseXY(conditionOneResolved,angle);
+
+        Coordinate2D roundedLocation=new Coordinate2D(Util2D.round3deci(conditionOneResolved.getX()),Util2D.round3deci(conditionOneResolved.getY()));
+
+        return roundedLocation;
 
     }
 
@@ -55,7 +61,7 @@ public class LocationFinder {
         //rotating//
         //in Beacon_2 calculate only rotated x, y goes to 0
         Coordinate2D shiftedAndRotatedB_2=new Coordinate2D((float)Util2D.rotateClockwiseX(shiftedB_2,angle),0);
-        Coordinate2D shiftedAndRotatedB_3=Util2D.rotateAntiClockwiseXY(shiftedB_3,angle);
+        Coordinate2D shiftedAndRotatedB_3=Util2D.rotateClockwiseXY(shiftedB_3,angle);
 
         HashMap<String, Coordinate2D> shiftedAndRotatedBeaconCoordinates = new HashMap<>();
         shiftedAndRotatedBeaconCoordinates.put("beacon_1",shiftedAndRotatedB_1);
@@ -94,12 +100,12 @@ public class LocationFinder {
         double x_ = ( Math.pow(r1,2) - Math.pow(r2,2) + Math.pow(b1b2,2) ) / (2 * b1b2);
 
         double y_plus = Math.sqrt ( Math.pow(r1,2) - Math.pow(x_,2));
-        double y_minus = Math.sqrt ( Math.pow(r1,2) - Math.pow(x_,2));
+        double y_minus = -Math.sqrt ( Math.pow(r1,2) - Math.pow(x_,2));
 
 
         //////////////////////////////////////////////////
         // * need to select y_ from y_plus and y_plus * //
-        //////////////////////////////////////////////////
+        ///////////////////////////company/com/locationfinder/LocationFindingAlgorithm/LocationFinder.java:13///////////////////////
 
         // P is the point we are looking P = (x_,y_)
         // point N is the crossing point on b2b3 by the perpendicular line from P
@@ -140,7 +146,7 @@ public class LocationFinder {
      */
     private static Coordinate2D resolveCondition1(Coordinate2D point,double shiftingX,double shiftingY, double angle){
         Coordinate2D shiftedResolvedPoint = Util2D.shiftXY_outOfOrigin(point,shiftingX, shiftingY);
-        Coordinate2D shiftedAndRotatedResolvedPoint=Util2D.rotateAntiClockwiseXY(point,angle);
+        Coordinate2D shiftedAndRotatedResolvedPoint=Util2D.rotateAntiClockwiseXY(shiftedResolvedPoint,angle);
         return shiftedAndRotatedResolvedPoint;
     }
 }

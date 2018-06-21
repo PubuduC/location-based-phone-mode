@@ -1,9 +1,17 @@
 package company.com.locationfinder;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -12,16 +20,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import company.com.locationfinder.BeaconManager.BeaconDataScanner;
+import company.com.locationfinder.BeaconManager.BeaconWrapper;
 import company.com.locationfinder.fragments.BeaconFragment;
 import company.com.locationfinder.fragments.GraphFragment;
 import company.com.locationfinder.fragments.LocationPointFragment;
 import company.com.locationfinder.fragments.SettingsFragment;
-import company.com.locationfinder.fragments.dummy.DummyContent;
-
-import static company.com.locationfinder.Constants.SHARED_PREFERENCES;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -31,11 +39,15 @@ public class MainActivity extends AppCompatActivity
         BeaconFragment.OnListFragmentInteractionListener,
         SettingsFragment.OnFragmentInteractionListener{
 
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+
     private static final String TAG ="Main activity";
 
     private String title;
 
     public NavigationView navigationView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +74,69 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.mainFrame, new GraphFragment());
         ft.commit();
+
+
+        getPermission();
+
+
+        startBeaconScanningService();
+        startLocationUpdatingService();
+
+    }
+
+
+    public void startBeaconScanningService() {
+        Intent i = new Intent(this, BeaconDataScanner.class);
+        startService(i);
+    }
+
+    public void startLocationUpdatingService() {
+        new LocationUpdatingService().init(this);
+    }
+
+    private void getPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Android M Permission check 
+            if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("This app needs location access");
+                builder.setMessage("Please grant location access so this app can detect beacons.");
+                builder.setPositiveButton(android.R.string.ok, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    //                //                                        @Override 
+                    @TargetApi(Build.VERSION_CODES.M)
+                    public void onDismiss(DialogInterface dialog) {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+                    }
+                });
+                builder.show();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[],
+                                           int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_COARSE_LOCATION: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "coarse location permission granted");
+                } else {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Functionality limited");
+                    builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
+                    builder.setPositiveButton(android.R.string.ok, null);
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                        }
+                    });
+                    builder.show();
+                }
+                return;
+            }
+        }
     }
 
     public void navigateToGraph(){
@@ -136,11 +211,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-
-    }
-
-    @Override
     public void onFragmentInteraction(String title) {
         getSupportActionBar().setTitle(title);
     }
@@ -152,14 +222,14 @@ public class MainActivity extends AppCompatActivity
 
 
     private void writeSharedPreferences(String key,float value){
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES,Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putFloat(key, value);
         editor.commit();
     }
 
     private void writeSharedPreferences(String key,int value){
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES,Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(key, value);
         editor.commit();
@@ -167,15 +237,20 @@ public class MainActivity extends AppCompatActivity
 
     private float readSharedPreferences_float(String key){
         float defaultValue=0;
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES,Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         float val=sharedPref.getFloat(key,defaultValue);
         return val;
     }
 
     private float readSharedPreferences_int(String key){
         int defaultValue=0;
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(SHARED_PREFERENCES,Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         int val=sharedPref.getInt(key,defaultValue);
         return val;
+    }
+
+    @Override
+    public void onListFragmentInteraction(BeaconWrapper item) {
+
     }
 }

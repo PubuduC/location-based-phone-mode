@@ -12,18 +12,16 @@
         android:layout_marginRight="10pt">
 
     <TextView
-        android:id="@+id/desc"
+        android:id="@+id/beaconDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="10pt"
         android:text="Change beacon coordinates"
         android:layout_marginLeft="5pt"
-        android:lines="10"
+        android:lines="15"
         android:layout_marginTop="10pt"
         />
 
 
-
     </LinearLayout>
-
 </FrameLayout>

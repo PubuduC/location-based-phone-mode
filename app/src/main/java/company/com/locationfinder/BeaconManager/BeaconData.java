@@ -40,12 +40,15 @@ public class BeaconData {
     }
 
     public static void addToHashMap(int i, Beacon beacon) {
+
+
+
         beacons.put(i,beacon);
 
         // TODO: 6/17/18 check if exixting add other attributes to the wraper
         BeaconWrapper wraper = new BeaconWrapper(beacon);
+        wraper.setKey(i);
         beaconWrapers.put(i,wraper);
-
 
     }
 }

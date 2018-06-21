@@ -3,28 +3,24 @@ package company.com.locationfinder.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.provider.ContactsContract.CommonDataKinds.Organization;
 
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import company.com.locationfinder.BeaconManager.BeaconData;
 import company.com.locationfinder.Constants;
 import company.com.locationfinder.LocationFindingAlgorithm.Coordinate2D;
+import company.com.locationfinder.LocationFindingAlgorithm.Util2D;
+import company.com.locationfinder.LocationUpdatingService;
 import company.com.locationfinder.R;
-
-import static company.com.locationfinder.Constants.SHARED_PREFERENCES;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +41,6 @@ public class LocationPointFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    private String description="lol";
     private View view;
     private TextView textView;
     private SharedPreferences sharedpreferences;
@@ -79,7 +74,7 @@ public class LocationPointFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        sharedpreferences=getActivity().getSharedPreferences(SHARED_PREFERENCES,Context.MODE_PRIVATE);
+        sharedpreferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
     @Override
@@ -88,8 +83,7 @@ public class LocationPointFragment extends Fragment {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_location_point, container, false);
 
-        textView=(TextView)view.findViewById(R.id.desc);
-        textView.setText(description);
+        textView=(TextView)view.findViewById(R.id.beaconDetails);
 
         startTimer();
         return view;
@@ -148,11 +142,12 @@ public class LocationPointFragment extends Fragment {
 
         String data="";
 
-       data+="beacon 1 :  ["+beacon_1.toString()+"]" + "  d="+b1_distance+"m\n\n";
-       data+="beacon 2 :  ["+beacon_2.toString()+"]" + "  d= :"+b2_distance+"m\n\n";
-       data+="beacon 3 :  ["+beacon_3.toString()+"]" + "  d= :"+b3_distance+"m\n\n";
+       data+="beacon 1 :  ["+beacon_1.toRoundedString()+"]" + "  d="+ Util2D.round3deci(b1_distance)+"m\n\n";
+       data+="beacon 2 :  ["+beacon_2.toRoundedString()+"]" + "  d="+Util2D.round3deci(b2_distance)+"m\n\n";
+       data+="beacon 3 :  ["+beacon_3.toRoundedString()+"]" + "  d="+Util2D.round3deci(b3_distance)+"m\n\n";
 
-       data+="point : "+"";
+           data += "point : x=" + LocationUpdatingService.pointX;
+           data += "  y=" + LocationUpdatingService.pointY;
 
 
         textView.setText(String.valueOf(data));

@@ -1,5 +1,7 @@
 package company.com.locationfinder.LocationFindingAlgorithm;
 
+import java.text.DecimalFormat;
+
 public class Coordinate2D {
 
         private double x;
@@ -29,5 +31,10 @@ public class Coordinate2D {
     @Override
     public String toString() {
         return "x=" + x +", y=" + y;
+    }
+
+
+    public String toRoundedString(){
+            return "x=" + Util2D.round3deci(x) +", y=" + Util2D.round3deci(y);
     }
 }

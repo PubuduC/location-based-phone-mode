@@ -6,23 +6,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import company.com.locationfinder.BeaconManager.BeaconWrapper;
 import company.com.locationfinder.R;
 import company.com.locationfinder.fragments.BeaconFragment.OnListFragmentInteractionListener;
-import company.com.locationfinder.fragments.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link BeaconWrapper} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyBeaconRecyclerViewAdapter extends RecyclerView.Adapter<MyBeaconRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<BeaconWrapper> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyBeaconRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyBeaconRecyclerViewAdapter(List<BeaconWrapper> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -37,8 +37,8 @@ public class MyBeaconRecyclerViewAdapter extends RecyclerView.Adapter<MyBeaconRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.beacon_major.setText(String.valueOf(mValues.get(position).getKey()));
+        holder.beacon_distance.setText(String.valueOf(mValues.get(position).getBeacon().getDistance()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,20 +59,20 @@ public class MyBeaconRecyclerViewAdapter extends RecyclerView.Adapter<MyBeaconRe
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView beacon_major;
+        public final TextView beacon_distance;
+        public BeaconWrapper mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.beacon_major);
-            mContentView = (TextView) view.findViewById(R.id.distance);
+            beacon_major = (TextView) view.findViewById(R.id.beacon_major);
+            beacon_distance = (TextView) view.findViewById(R.id.distance);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + beacon_distance.getText() + "'";
         }
     }
 }

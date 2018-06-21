@@ -49,6 +49,7 @@ public class BeaconDataScanner extends IntentService implements BeaconConsumer {
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
 
         beaconManager.bind(this);
+        Log.d("serviceb","started");
     }
 
     @Override

@@ -12,3 +12,4 @@
     tools:context=".fragments.BeaconFragment"
     tools:listitem="@layout/fragment_beacon" />
 
+
