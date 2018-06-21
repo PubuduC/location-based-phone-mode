@@ -42,7 +42,7 @@ public class GraphMakerXY {
         beacon_1Entry.add(new Entry(beacon_1.getX(), beacon_1.getY()));
 
         beacon_1_ = new ScatterDataSet(beacon_1Entry, "Beacon_1");
-        beacon_1_.setColor(Color.BLUE);
+        beacon_1_.setColor(Color.rgb(76, 97, 165));
         beacon_1_.setValueTextColor(Color.BLACK);
         beacon_1_.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
         beacon_1_.setScatterShapeSize(50);
@@ -53,7 +53,7 @@ public class GraphMakerXY {
         beacon_2Entry.add(new Entry(beacon_2.getX(), beacon_2.getY()));
 
         beacon_2_ = new ScatterDataSet(beacon_2Entry, "Beacon_2");
-        beacon_2_.setColor(Color.GREEN);
+        beacon_2_.setColor(Color.rgb(65, 244, 175));
         beacon_2_.setValueTextColor(Color.BLACK);
         beacon_2_.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
         beacon_2_.setScatterShapeSize(50);
@@ -64,7 +64,7 @@ public class GraphMakerXY {
         beacon_3Entry.add(new Entry(beacon_3.getX(), beacon_3.getY()));
 
         beacon_3_ = new ScatterDataSet(beacon_3Entry, "Beacon_3");
-        beacon_3_.setColor(Color.BLACK);
+        beacon_3_.setColor(Color.rgb(4, 13, 38));
         beacon_3_.setValueTextColor(Color.BLACK);
         beacon_3_.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
         beacon_3_.setScatterShapeSize(50);
@@ -97,19 +97,36 @@ public class GraphMakerXY {
         chart.getLegend().setForm(Legend.LegendForm.CIRCLE);
         chart.getLegend().setXEntrySpace(30);
 
-//        chart.setAutoScaleMinMaxEnabled(false);
+        float maxX=chart.getXAxis().getAxisMaximum();
+        chart.getAxisLeft().setAxisMaximum( maxX *2.3f);
+        int xlabelCount=chart.getXAxis().getLabelCount();
+        chart.getAxisLeft().setLabelCount((int) (xlabelCount*2.3f));
+        chart.getAxisLeft().setGranularity(0.1f);
+        chart.getXAxis().setGranularity(0.1f);
+    }
 
+
+    private static void setYMax(){
+        float maxX=chart.getXAxis().getAxisMaximum();
+        int height=chart.getHeight();
+        int width=chart.getWidth();
+        if (width!=0) {
+            chart.getAxisLeft().setAxisMaximum(maxX * (height / width));
+        chart.setAutoScaleMinMaxEnabled(false);
+        }
     }
 
     public static void addPoint(Coordinate2D point) {
         final List<Entry> point_Entry = new ArrayList<Entry>();
         point_Entry.add(new Entry(point.getX(), point.getY()));
         point_ = new ScatterDataSet(point_Entry, "Point");
-        point_.setColor(Color.RED);
+        point_.setColor(Color.rgb(219, 59, 91));
         point_.setValueTextColor(Color.BLACK);
         point_.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
         point_.setScatterShapeSize(70);
         point_.setDrawValues(false);
+        point_.setScatterShapeHoleRadius(6);
+        point_.setScatterShapeHoleColor(Color.rgb(145, 207, 255));
 
         ScatterDataSet[] dataSets={beacon_1_,beacon_2_,beacon_3_,point_};
         addToGraph(dataSets);

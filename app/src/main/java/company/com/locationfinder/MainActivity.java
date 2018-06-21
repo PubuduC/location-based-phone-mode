@@ -23,6 +23,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import company.com.locationfinder.BeaconManager.BeaconDataScanner;
 import company.com.locationfinder.BeaconManager.BeaconWrapper;
@@ -79,6 +81,8 @@ public class MainActivity extends AppCompatActivity
         getPermission();
 
 
+
+
         startBeaconScanningService();
         startLocationUpdatingService();
 
@@ -94,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         new LocationUpdatingService().init(this);
     }
 
-    private void getPermission() {
+    public void getPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // Android M Permission check 
             if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -194,6 +198,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.beacon_setup) {
             fragment = new SettingsFragment();
 
+
         } else if (id == R.id.check_beacons) {
 
             fragment = new BeaconFragment();
@@ -253,4 +258,7 @@ public class MainActivity extends AppCompatActivity
     public void onListFragmentInteraction(BeaconWrapper item) {
 
     }
+
+
+
 }

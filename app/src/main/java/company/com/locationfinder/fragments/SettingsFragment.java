@@ -114,6 +114,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
         });
         setCurrentSavedPositionsToSettingsView(view);
 
+
         return view;
     }
 
@@ -163,7 +164,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
             ((EditText)view.findViewById(R.id.beacon3_y_value)).setText(readSharedPreferences_float("b3_y"));
 
 
-        Log.d(TAG,"Beacon positions an major keys added to settings fragment from storage");
+        Log.d(TAG,"Beacon positions and major keys added to settings fragment from storage");
 
     }
 
