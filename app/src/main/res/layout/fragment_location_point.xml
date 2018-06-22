@@ -1,27 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.LocationPointFragment">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:layout_marginRight="10pt">
+    <!--<LinearLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_marginRight="10pt">-->
 
-    <TextView
-        android:id="@+id/beaconDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10pt"
-        android:text="Change beacon coordinates"
-        android:layout_marginLeft="5pt"
-        android:lines="15"
-        android:layout_marginTop="10pt"
-        />
+    <!--<TextView-->
+        <!--android:id="@+id/beaconDetails"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="10pt"-->
+        <!--android:text="Change beacon coordinates"-->
+        <!--android:layout_marginLeft="5pt"-->
+        <!--android:lines="15"-->
+        <!--android:layout_marginTop="10pt"-->
+        <!--/>-->
 
 
-    </LinearLayout>
-</FrameLayout>
+    <!--</LinearLayout>-->
+
+    <TableLayout android:id="@+id/tableLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="12pt">
+
+        <TableRow android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:text="Beacon"
+                android:textStyle="bold"/>
+
+            <TextView android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:text="X"
+                android:textStyle="bold"/>
+            <TextView android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:text="Y"
+                android:textStyle="bold"/>
+            <TextView android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:text="distance"
+                android:textStyle="bold"/>
+
+        </TableRow>
+        <TableRow        android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+            <TextView android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:text="1"
+               />
+
+            <TextView android:id="@+id/b1_X"
+                android:layout_width="0dp"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                />
+            <TextView android:id="@+id/b1_Y"
+                android:layout_width="0dp"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+               />
+            <TextView android:id="@+id/b1_d"
+                android:layout_width="0dp"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+              />
+
+        </TableRow>
+        <TableRow        android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:text="2"/>
+
+            <TextView android:id="@+id/b2_X"
+                android:layout_width="0dp"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                />
+            <TextView android:id="@+id/b2_Y"
+                android:layout_width="0dp"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+               />
+            <TextView android:id="@+id/b2_d"
+                android:layout_width="0dp"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                />
+
+
+        </TableRow>
+        <TableRow  android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:text="3"/>
+
+            <TextView android:id="@+id/b3_X"
+                android:layout_width="0dp"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+               />
+            <TextView android:id="@+id/b3_Y"
+                android:layout_width="0dp"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                />
+            <TextView android:id="@+id/b3_d"
+                android:layout_width="0dp"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+               />
+        </TableRow>
+
+        <TextView android:id="@+id/point"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:layout_marginTop="70dp"
+            />
+
+    </TableLayout>
+
+
+
+</RelativeLayout>

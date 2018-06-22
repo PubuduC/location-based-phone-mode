@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -35,6 +36,8 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import company.com.locationfinder.BeaconManager.BeaconData;
+import company.com.locationfinder.BeaconManager.BeaconScannerService;
+import company.com.locationfinder.BeaconManager.BeaconService;
 import company.com.locationfinder.BeaconManager.BeaconWrapper;
 import company.com.locationfinder.fragments.BeaconFragment;
 import company.com.locationfinder.fragments.GraphFragment;
@@ -67,9 +70,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -94,18 +100,23 @@ public class MainActivity extends AppCompatActivity
 
         getPermission();
 
-
-
-        startBeaconScanningService();
+//        startBeaconScanningService();
 
         startLocationUpdatingService();
 
     }
 
-    public void startBeaconScanningService() {
-//        Intent i = new Intent(this, BeaconDataScanner.class);
-//        startService(i);
+    @Override
+    protected void onStart() {
+        super.onStart();
         setupBeaconScanner();
+    }
+
+    public void startBeaconScanningService() {
+//        Intent i = new Intent(this, BeaconScannerService.class);
+//        startService(i);
+//        setupBeaconScanner();
+//        startService(new Intent(this, BeaconService.class));
 
     }
 
@@ -360,6 +371,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        beaconManager.unbind(this);
+//        beaconManager.unbind(this);
     }
 }
