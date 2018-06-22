@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import company.com.locationfinder.BeaconManager.BeaconWrapper;
+import company.com.locationfinder.LocationFindingAlgorithm.Util2D;
 import company.com.locationfinder.R;
 import company.com.locationfinder.fragments.BeaconFragment.OnListFragmentInteractionListener;
 
@@ -37,8 +38,11 @@ public class MyBeaconRecyclerViewAdapter extends RecyclerView.Adapter<MyBeaconRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.beacon_major.setText(String.valueOf(mValues.get(position).getKey()));
-        holder.beacon_distance.setText(String.valueOf(mValues.get(position).getBeacon().getDistance()));
+        holder.beacon_major.setText(String.valueOf(mValues.get(position).getBeacon().getId2()));
+        holder.beacon_minor.setText(String.valueOf(mValues.get(position).getBeacon().getId3()));
+        holder.beacon_uid.setText(String.valueOf(mValues.get(position).getBeacon().getId1()));
+
+        holder.beacon_distance.setText(String.valueOf(Util2D.round3deci(mValues.get(position).getBeacon().getDistance())));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +65,10 @@ public class MyBeaconRecyclerViewAdapter extends RecyclerView.Adapter<MyBeaconRe
         public final View mView;
         public final TextView beacon_major;
         public final TextView beacon_distance;
+        public final TextView beacon_minor;
+        public final TextView beacon_uid;
+
+
         public BeaconWrapper mItem;
 
         public ViewHolder(View view) {
@@ -68,6 +76,8 @@ public class MyBeaconRecyclerViewAdapter extends RecyclerView.Adapter<MyBeaconRe
             mView = view;
             beacon_major = (TextView) view.findViewById(R.id.beacon_major);
             beacon_distance = (TextView) view.findViewById(R.id.distance);
+            beacon_minor = (TextView) view.findViewById(R.id.minor);
+            beacon_uid = (TextView) view.findViewById(R.id.uid);
         }
 
         @Override
