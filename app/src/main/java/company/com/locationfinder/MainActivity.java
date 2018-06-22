@@ -3,14 +3,13 @@ package company.com.locationfinder;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -23,10 +22,19 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
-import company.com.locationfinder.BeaconManager.BeaconDataScanner;
+import org.altbeacon.beacon.Beacon;
+import org.altbeacon.beacon.BeaconConsumer;
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.RangeNotifier;
+import org.altbeacon.beacon.Region;
+
+import java.util.Collection;
+import java.util.HashMap;
+
+import company.com.locationfinder.BeaconManager.BeaconData;
 import company.com.locationfinder.BeaconManager.BeaconWrapper;
 import company.com.locationfinder.fragments.BeaconFragment;
 import company.com.locationfinder.fragments.GraphFragment;
@@ -34,16 +42,21 @@ import company.com.locationfinder.fragments.LocationPointFragment;
 import company.com.locationfinder.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
+        implements BeaconConsumer,
+
+        NavigationView.OnNavigationItemSelectedListener,
 
         GraphFragment.OnFragmentInteractionListener,
         LocationPointFragment.OnFragmentInteractionListener,
         BeaconFragment.OnListFragmentInteractionListener,
-        SettingsFragment.OnFragmentInteractionListener{
+        SettingsFragment.OnFragmentInteractionListener {
+
 
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
     private static final String TAG ="Main activity";
+
+
 
     private String title;
 
@@ -78,20 +91,22 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
 
 
+
         getPermission();
 
 
 
-
         startBeaconScanningService();
+
         startLocationUpdatingService();
 
     }
 
-
     public void startBeaconScanningService() {
-        Intent i = new Intent(this, BeaconDataScanner.class);
-        startService(i);
+//        Intent i = new Intent(this, BeaconDataScanner.class);
+//        startService(i);
+        setupBeaconScanner();
+
     }
 
     public void startLocationUpdatingService() {
@@ -102,12 +117,12 @@ public class MainActivity extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // Android M Permission check 
             if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
                 builder.setTitle("This app needs location access");
                 builder.setMessage("Please grant location access so this app can detect beacons.");
                 builder.setPositiveButton(android.R.string.ok, null);
                 builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    //                //                                        @Override 
+                    //                    @Override 
                     @TargetApi(Build.VERSION_CODES.M)
                     public void onDismiss(DialogInterface dialog) {
                         requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
@@ -261,4 +276,90 @@ public class MainActivity extends AppCompatActivity
 
 
 
+
+    ///////////Beacon scanning/////////////
+    private BeaconManager beaconManager;
+    private static final String TAG_BEACON_SCAN ="Beacon Scanner";
+
+    private void setupBeaconScanner(){
+        beaconManager = BeaconManager.getInstanceForApplication(this);
+//
+        beaconManager.getBeaconParsers().add(new BeaconParser()
+                .setBeaconLayout(BeaconParser.ALTBEACON_LAYOUT));
+//
+        beaconManager.getBeaconParsers().add(new BeaconParser()
+                .setBeaconLayout(BeaconParser.EDDYSTONE_URL_LAYOUT));
+
+        beaconManager.getBeaconParsers().add(new BeaconParser()
+                .setBeaconLayout(BeaconParser.EDDYSTONE_UID_LAYOUT));
+
+
+
+
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
+
+        beaconManager.bind(this);
+    }
+
+    @Override
+    public void onBeaconServiceConnect() {
+//        Identifier.parse("B9407F30-F5F8-466E-AFF9-25556B57FE6D")
+        final Region region = new Region("myBeaons",null, null, null);
+
+        beaconManager.setMonitorNotifier(new MonitorNotifier() {
+            @Override
+            public void didEnterRegion(Region region) {
+                try {
+                    Log.d(TAG_BEACON_SCAN, "didEnterRegion");
+                    beaconManager.startRangingBeaconsInRegion(region);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void didExitRegion(Region region) {
+                try {
+                    Log.d(TAG_BEACON_SCAN, "didExitRegion");
+                    beaconManager.stopRangingBeaconsInRegion(region);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void didDetermineStateForRegion(int i, Region region) {
+
+            }
+        });
+//
+        final HashMap<Integer,Beacon> beaconsmap=new HashMap<>();
+
+        beaconManager.setRangeNotifier(new RangeNotifier() {
+            @Override
+            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+                for(Beacon beacon : beacons) {
+                    Log.d(TAG_BEACON_SCAN, "distance: " + beacon.getDistance() + " id:" + beacon.getId1() + "/" + beacon.getId2() + "/" + beacon.getId3());
+//                    beaconsmap.put(beacon.getId2().toInt(),beacon);
+                    BeaconData.addToHashMap(beacon.getId2().toInt(),beacon);
+                    Log.d(TAG_BEACON_SCAN+"map","beacons:"+BeaconData.getBeacons().size());
+                }
+            }
+        });
+
+        try {
+            beaconManager.startMonitoringBeaconsInRegion(region);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        beaconManager.unbind(this);
+    }
 }

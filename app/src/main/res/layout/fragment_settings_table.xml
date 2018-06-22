@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <!-- 2 columns -->
+
+    <TextView
+        android:id="@+id/beaconDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="8pt"
+        android:text="Change beacon coordinates"
+        android:layout_marginLeft="5pt"
+        android:layout_marginTop="10pt"
+        android:layout_marginBottom="10pt"
+        android:textColor="#000"
+        />
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#c9d5e8">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:layout_weight="1"
+            android:text=" #"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:layout_weight="3"
+            android:text="major"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:layout_weight="3"
+            android:text="X"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:layout_weight="3"
+            android:text="Y"/>
+
+    </TableRow>
+
+    <!-- edittext span 2 column -->
+
+    <View
+        android:layout_height="2dip"
+        android:background="@color/design_default_color_primary"
+        android:layout_marginBottom="5pt"/>
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:text=" 1]"/>
+
+        <EditText
+            android:id="@+id/beacon1_major_value"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:hint="Major value"
+            android:ems="10"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/beacon1_x_value"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:hint="X"
+            android:ems="10"
+            android:inputType="numberDecimal|numberSigned" />
+        <EditText
+            android:id="@+id/beacon1_y_value"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:hint="Y"
+            android:ems="10"
+            android:inputType="numberDecimal|numberSigned" />
+
+    </TableRow>
+
+    <View
+        android:layout_height="2dip"
+        android:background="@color/design_default_color_primary"
+        android:layout_marginBottom="5pt"/>
+
+    <TableRow
+        android:id="@+id/tableRow3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:text=" 2]"/>
+
+        <EditText
+            android:id="@+id/beacon2_major_value"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:hint="Major value"
+            android:ems="10"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/beacon2_x_value"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:hint="X"
+            android:ems="10"
+            android:inputType="numberDecimal|numberSigned" />
+        <EditText
+            android:id="@+id/beacon2_y_value"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:hint="Y"
+            android:ems="10"
+            android:inputType="numberDecimal|numberSigned" />
+
+    </TableRow>
+
+    <View
+        android:layout_height="2dip"
+        android:background="@color/design_default_color_primary"
+        android:layout_marginBottom="5pt"/>
+
+
+    <TableRow
+        android:id="@+id/tableRow4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:text=" 3]"/>
+        <EditText
+            android:id="@+id/beacon3_major_value"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:hint="Major value"
+            android:ems="10"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/beacon3_x_value"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:hint="X"
+            android:ems="10"
+            android:inputType="numberDecimal|numberSigned" />
+        <EditText
+            android:id="@+id/beacon3_y_value"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:hint="Y"
+            android:ems="10"
+            android:inputType="numberDecimal|numberSigned" />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <Button
+            android:id="@+id/save_settings_btn"
+            android:layout_marginTop="10pt"
+            android:layout_height="wrap_content"
+            android:text="Update Positions"
+            android:layout_width="fill_parent">
+        </Button>
+
+    </TableRow>
+
+</TableLayout>

@@ -91,7 +91,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_settings, container, false);
+        view= inflater.inflate(R.layout.fragment_settings_table, container, false);
 
         b1major = ((EditText) view.findViewById(R.id.beacon1_major_value));
         b1x = ((EditText) view.findViewById(R.id.beacon1_x_value));
