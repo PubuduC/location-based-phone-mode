@@ -1,13 +1,13 @@
 package company.com.locationfinder.LocationFindingAlgorithm;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class LocationFinder {
 
 
     private static double angle;
-
+    private static double fPrevious=0;
+    private static TrilateriationSecondAlgo algo2=new TrilateriationSecondAlgo();
 
     /**
      *
@@ -99,9 +99,19 @@ public class LocationFinder {
 
         double x_ = ( Math.pow(r1,2) - Math.pow(r2,2) + Math.pow(b1b2,2) ) / (2 * b1b2);
 
-        double y_plus = Math.sqrt ( Math.pow(r1,2) - Math.pow(x_,2));
-        double y_minus = -Math.sqrt ( Math.pow(r1,2) - Math.pow(x_,2));
+        double y_temp=0;
+        if(!(r1-x_<0)){
+            y_temp= Math.sqrt ( Math.pow(r1,2) - Math.pow(x_,2));
+        }
+        else if (r1-x_<0 && (r2-(b1b2-x_)>=0)){
+            y_temp= Math.sqrt ( Math.pow(r2,2) - Math.pow(b1b2-x_,2));
+        }else if (r1-x_<0 && (r2-(b1b2-x_)<0)){
 
+            double yGotFromAlgo2=algo2.findCenter(b1,b2,b3,r1,r2,r3).getY();
+            return new Coordinate2D(x_,yGotFromAlgo2);
+        }
+        double y_plus = y_temp;
+        double y_minus = -y_temp;
 
         //////////////////////////////////////////////////
         // * need to select y_ from y_plus and y_plus * //
@@ -113,7 +123,17 @@ public class LocationFinder {
         // f = PN
 
         double g = ( Math.pow(r2,2) - Math.pow(r3,2) + Math.pow(b2b3,2) )/ (2 * b2b3);
-        double f =  Math.sqrt(Math.abs(Math.pow(r2,2) - Math.pow(g,2) ));
+
+        double f_temp=0;
+        if (!(r2-g<0)){
+            f_temp=Math.sqrt(Math.abs(Math.pow(r2,2) - Math.pow(g,2) ));
+        }else if(r2-g<0 && (r3-(b2b3-g))>=0){
+            f_temp=Math.sqrt(Math.abs(Math.pow(r3,2) - Math.pow(b2b3-g,2) ));
+        }else if(r2-g<0 && (r3-(b2b3-g)<0)){
+            f_temp=fPrevious;
+        }
+
+        double f =  f_temp;
 
         //ratio on b2b3 by N
         double ratio=g/(b2b3-g);
@@ -137,6 +157,9 @@ public class LocationFinder {
         if (difference1>difference2){
             P=P_2;
         }
+
+        fPrevious=f;
+
         return P;
     }
 
