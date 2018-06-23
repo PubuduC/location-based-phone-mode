@@ -83,7 +83,7 @@ public class LocationPointFragment extends Fragment {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_location_point, container, false);
 
-        textView=(TextView)view.findViewById(R.id.beaconDetails);
+//        textView=(TextView)view.findViewById(R.id.beaconDetails);
 
         startTimer();
         return view;
@@ -140,17 +140,31 @@ public class LocationPointFragment extends Fragment {
         int beacon_3_major=readSharedPreferences_int(Constants.b3_major);
         double b3_distance= BeaconData.getBeacons().get(beacon_3_major)==null? 0:BeaconData.getBeacons().get(beacon_3_major).getDistance();
 
-        String data="";
+//        String data="";
+//
+//       data+="beacon 1 :  ["+beacon_1.toRoundedString()+"]" + "  d="+ Util2D.round3deci(b1_distance)+"m\n\n";
+//       data+="beacon 2 :  ["+beacon_2.toRoundedString()+"]" + "  d="+Util2D.round3deci(b2_distance)+"m\n\n";
+//       data+="beacon 3 :  ["+beacon_3.toRoundedString()+"]" + "  d="+Util2D.round3deci(b3_distance)+"m\n\n";
+//
+//           data += "point : x=" + LocationUpdatingService.pointX;
+//           data += "  y=" + LocationUpdatingService.pointY;
+//
+//
+//        textView.setText(String.valueOf(data));
 
-       data+="beacon 1 :  ["+beacon_1.toRoundedString()+"]" + "  d="+ Util2D.round3deci(b1_distance)+"m\n\n";
-       data+="beacon 2 :  ["+beacon_2.toRoundedString()+"]" + "  d="+Util2D.round3deci(b2_distance)+"m\n\n";
-       data+="beacon 3 :  ["+beacon_3.toRoundedString()+"]" + "  d="+Util2D.round3deci(b3_distance)+"m\n\n";
+        ((TextView)view.findViewById(R.id.b1_X)).setText(String.valueOf(Util2D.round3deci(beacon_1.getX())));
+        ((TextView)view.findViewById(R.id.b1_Y)).setText(String.valueOf(Util2D.round3deci(beacon_1.getY())));
+        ((TextView)view.findViewById(R.id.b1_d)).setText(String.valueOf(Util2D.round3deci(b1_distance)));
 
-           data += "point : x=" + LocationUpdatingService.pointX;
-           data += "  y=" + LocationUpdatingService.pointY;
+        ((TextView)view.findViewById(R.id.b2_X)).setText(String.valueOf(Util2D.round3deci(beacon_2.getX())));
+        ((TextView)view.findViewById(R.id.b2_Y)).setText(String.valueOf(Util2D.round3deci(beacon_2.getY())));
+        ((TextView)view.findViewById(R.id.b2_d)).setText(String.valueOf(Util2D.round3deci(b2_distance)));
 
+        ((TextView)view.findViewById(R.id.b3_X)).setText(String.valueOf(Util2D.round3deci(beacon_3.getX())));
+        ((TextView)view.findViewById(R.id.b3_Y)).setText(String.valueOf(Util2D.round3deci(beacon_3.getY())));
+        ((TextView)view.findViewById(R.id.b3_d)).setText(String.valueOf(Util2D.round3deci(b3_distance)));
 
-        textView.setText(String.valueOf(data));
+        ((TextView)view.findViewById(R.id.point)).setText("X= "+LocationUpdatingService.pointX+" , Y= "+LocationUpdatingService.pointY);
 
     }
 

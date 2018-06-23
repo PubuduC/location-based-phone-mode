@@ -22,7 +22,7 @@
         android:id="@+id/tableRow1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dip"
+        android:padding="5dp"
         android:background="#c9d5e8">
 
         <TextView
@@ -54,10 +54,10 @@
 
     <!-- edittext span 2 column -->
 
-    <View
-        android:layout_height="2dip"
-        android:background="@color/design_default_color_primary"
-        android:layout_marginBottom="5pt"/>
+    <!--<View-->
+        <!--android:layout_height="2dip"-->
+        <!--android:background="@color/design_default_color_primary"-->
+        <!--android:layout_marginBottom="5pt"/>-->
 
     <TableRow
         android:id="@+id/tableRow2"
@@ -99,10 +99,10 @@
 
     </TableRow>
 
-    <View
-        android:layout_height="2dip"
-        android:background="@color/design_default_color_primary"
-        android:layout_marginBottom="5pt"/>
+    <!--<View-->
+        <!--android:layout_height="2dip"-->
+        <!--android:background="@color/design_default_color_primary"-->
+        <!--android:layout_marginBottom="5pt"/>-->
 
     <TableRow
         android:id="@+id/tableRow3"
@@ -144,10 +144,10 @@
 
     </TableRow>
 
-    <View
-        android:layout_height="2dip"
-        android:background="@color/design_default_color_primary"
-        android:layout_marginBottom="5pt"/>
+    <!--<View-->
+        <!--android:layout_height="2dip"-->
+        <!--android:background="@color/design_default_color_primary"-->
+        <!--android:layout_marginBottom="5pt"/>-->
 
 
     <TableRow
@@ -189,20 +189,19 @@
 
     </TableRow>
 
-    <TableRow
-        android:id="@+id/tableRow5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dip" >
+
 
         <Button
             android:id="@+id/save_settings_btn"
             android:layout_marginTop="10pt"
             android:layout_height="wrap_content"
             android:text="Update Positions"
-            android:layout_width="fill_parent">
+            android:layout_width="wrap_content"
+
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
         </Button>
 
-    </TableRow>
+
 
 </TableLayout>
