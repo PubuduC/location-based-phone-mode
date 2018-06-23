@@ -32,12 +32,10 @@
         </activity>
 
         <service
-            android:name=".BeaconManager.BeaconScannerService"
-            android:exported="false" />
-        <service
             android:name=".BeaconManager.BeaconService"
             android:enabled="true"
             android:exported="true"></service>
     </application>
+
 
 </manifest>
