@@ -2,13 +2,11 @@ package company.com.locationfinder;
 
 import org.junit.Test;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import company.com.locationfinder.LocationFindingAlgorithm.Coordinate2D;
 import company.com.locationfinder.LocationFindingAlgorithm.LocationFinder;
-
-import static org.junit.Assert.*;
+import company.com.locationfinder.LocationFindingAlgorithm.TrilateriationSecondAlgo;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -28,6 +26,9 @@ public class ExampleUnitTest {
         double[] dataset2=new double[]{8,9,20,11,15,20,9.21,7.81,4.12,14,16};
         dataSetList.add(dataset2);
 
+        double[] dataset3=new double[]{0.02,0.01,2.1,0.05,1.2,2.6,0.53,1.45,0.53,0,0};
+        dataSetList.add(dataset3);
+
         for (double[] dataset : dataSetList){
 
             Coordinate2D cord1=new Coordinate2D(dataset[0],dataset[1]);
@@ -38,7 +39,10 @@ public class ExampleUnitTest {
             double dist2=dataset[7];
             double dist3=dataset[8];
 
-            Coordinate2D methodReturned=LocationFinder.getLocation(cord1,cord2,cord3,dist1,dist2,dist3);
+            TrilateriationSecondAlgo tl=new TrilateriationSecondAlgo();
+
+            Coordinate2D methodReturned= LocationFinder.getLocation(cord1,cord2,cord3,dist1,dist2,dist3);
+//            Coordinate2D methodReturned=tl.findCenter(cord1,cord2,cord3,dist1,dist2,dist3);
 
             Coordinate2D expected=new Coordinate2D(dataset[9],dataset[10]);
 
