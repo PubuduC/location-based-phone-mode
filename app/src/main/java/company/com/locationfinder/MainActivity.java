@@ -100,23 +100,23 @@ public class MainActivity extends AppCompatActivity
 
         getPermission();
 
-//        startBeaconScanningService();
+        startBeaconScanningService();
 
         startLocationUpdatingService();
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        setupBeaconScanner();
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        setupBeaconScanner();
+//    }
 
     public void startBeaconScanningService() {
 //        Intent i = new Intent(this, BeaconScannerService.class);
 //        startService(i);
 //        setupBeaconScanner();
-//        startService(new Intent(this, BeaconService.class));
+        startService(new Intent(this, BeaconService.class));
 
     }
 
@@ -366,6 +366,20 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
+    }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        if (beaconManager.isBound(this)) beaconManager.setBackgroundMode(true);
+//    }
+//
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        if (beaconManager.isBound(this)) beaconManager.setBackgroundMode(false);
+//        else beaconManager.bind(this);
+        startService(new Intent(this, BeaconService.class));
     }
 
     @Override
