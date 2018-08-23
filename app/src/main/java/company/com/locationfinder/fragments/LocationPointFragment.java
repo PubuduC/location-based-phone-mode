@@ -19,7 +19,7 @@ import company.com.locationfinder.BeaconManager.BeaconData;
 import company.com.locationfinder.Constants;
 import company.com.locationfinder.LocationFindingAlgorithm.Coordinate2D;
 import company.com.locationfinder.LocationFindingAlgorithm.Util2D;
-import company.com.locationfinder.LocationUpdatingService;
+import company.com.locationfinder.PeriodicServices.LocationUpdatingService;
 import company.com.locationfinder.R;
 
 /**
@@ -128,17 +128,17 @@ public class LocationPointFragment extends Fragment {
         Coordinate2D beacon_1 = new Coordinate2D(readSharedPreferences_float(Constants.b1_x),
                 readSharedPreferences_float(Constants.b1_y));
         int beacon_1_major=readSharedPreferences_int(Constants.b1_major);
-        double b1_distance= BeaconData.getBeacons().get(beacon_1_major)==null? 0:BeaconData.getBeacons().get(beacon_1_major).getDistance();
+        double b1_distance= BeaconData.getFoundBeacons().get(beacon_1_major)==null? 0:BeaconData.getFoundBeacons().get(beacon_1_major).getDistance();
 
         Coordinate2D beacon_2 = new Coordinate2D(readSharedPreferences_float(Constants.b2_x),
                 readSharedPreferences_float(Constants.b2_y));
         int beacon_2_major=readSharedPreferences_int(Constants.b2_major);
-        double b2_distance= BeaconData.getBeacons().get(beacon_2_major)==null? 0:BeaconData.getBeacons().get(beacon_2_major).getDistance();
+        double b2_distance= BeaconData.getFoundBeacons().get(beacon_2_major)==null? 0:BeaconData.getFoundBeacons().get(beacon_2_major).getDistance();
 
         Coordinate2D beacon_3 = new Coordinate2D(readSharedPreferences_float(Constants.b3_x),
                 readSharedPreferences_float(Constants.b3_y));
         int beacon_3_major=readSharedPreferences_int(Constants.b3_major);
-        double b3_distance= BeaconData.getBeacons().get(beacon_3_major)==null? 0:BeaconData.getBeacons().get(beacon_3_major).getDistance();
+        double b3_distance= BeaconData.getFoundBeacons().get(beacon_3_major)==null? 0:BeaconData.getFoundBeacons().get(beacon_3_major).getDistance();
 
 //        String data="";
 //

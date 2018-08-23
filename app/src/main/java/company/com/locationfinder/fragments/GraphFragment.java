@@ -19,7 +19,7 @@ import java.util.TimerTask;
 import company.com.locationfinder.Constants;
 import company.com.locationfinder.Graph.GraphMakerXY;
 import company.com.locationfinder.LocationFindingAlgorithm.Coordinate2D;
-import company.com.locationfinder.LocationUpdatingService;
+import company.com.locationfinder.PeriodicServices.LocationUpdatingService;
 import company.com.locationfinder.R;
 
 

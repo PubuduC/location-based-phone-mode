@@ -36,11 +36,13 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import company.com.locationfinder.BeaconManager.BeaconData;
-import company.com.locationfinder.BeaconManager.BeaconScannerService;
 import company.com.locationfinder.BeaconManager.BeaconService;
 import company.com.locationfinder.BeaconManager.BeaconWrapper;
+import company.com.locationfinder.PeriodicServices.LocationUpdatingService;
+import company.com.locationfinder.PeriodicServices.RelatedBeaconAreaIdentifier;
 import company.com.locationfinder.fragments.BeaconFragment;
 import company.com.locationfinder.fragments.GraphFragment;
+import company.com.locationfinder.fragments.LocationAdderFragment;
 import company.com.locationfinder.fragments.LocationPointFragment;
 import company.com.locationfinder.fragments.SettingsFragment;
 
@@ -52,7 +54,9 @@ public class MainActivity extends AppCompatActivity
         GraphFragment.OnFragmentInteractionListener,
         LocationPointFragment.OnFragmentInteractionListener,
         BeaconFragment.OnListFragmentInteractionListener,
-        SettingsFragment.OnFragmentInteractionListener {
+        SettingsFragment.OnFragmentInteractionListener,
+        LocationAdderFragment.OnFragmentInteractionListener
+        {
 
 
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
@@ -104,6 +108,8 @@ public class MainActivity extends AppCompatActivity
 
         startLocationUpdatingService();
 
+        startRelatedBeaconAreaIdentifier();
+
     }
 
 //    @Override
@@ -122,6 +128,11 @@ public class MainActivity extends AppCompatActivity
 
     public void startLocationUpdatingService() {
         new LocationUpdatingService().init(this);
+    }
+
+    public void startRelatedBeaconAreaIdentifier(){
+        startService(new Intent(this, RelatedBeaconAreaIdentifier.class));
+//        new RelatedBeaconAreaIdentifier().init(this);
     }
 
     public void getPermission() {
@@ -224,10 +235,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.beacon_setup) {
             fragment = new SettingsFragment();
 
-
         } else if (id == R.id.check_beacons) {
-
             fragment = new BeaconFragment();
+
+        } else if (id == R.id.addlocation){
+            fragment = new LocationAdderFragment();
         }
 
         if (fragment != null) {
@@ -279,13 +291,6 @@ public class MainActivity extends AppCompatActivity
         int val=sharedPref.getInt(key,defaultValue);
         return val;
     }
-
-    @Override
-    public void onListFragmentInteraction(BeaconWrapper item) {
-
-    }
-
-
 
 
     ///////////Beacon scanning/////////////
@@ -355,7 +360,7 @@ public class MainActivity extends AppCompatActivity
                     Log.d(TAG_BEACON_SCAN, "distance: " + beacon.getDistance() + " id:" + beacon.getId1() + "/" + beacon.getId2() + "/" + beacon.getId3());
 //                    beaconsmap.put(beacon.getId2().toInt(),beacon);
                     BeaconData.addToHashMap(beacon.getId2().toInt(),beacon);
-                    Log.d(TAG_BEACON_SCAN+"map","beacons:"+BeaconData.getBeacons().size());
+                    Log.d(TAG_BEACON_SCAN+"map","beacons:"+BeaconData.getFoundBeacons().size());
                 }
             }
         });
@@ -387,4 +392,9 @@ public class MainActivity extends AppCompatActivity
         super.onDestroy();
 //        beaconManager.unbind(this);
     }
-}
+
+    @Override
+    public void onListFragmentInteraction(Beacon item) {
+
+    }
+        }

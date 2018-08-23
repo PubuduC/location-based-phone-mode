@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import company.com.locationfinder.Constants;
-import company.com.locationfinder.LocationUpdatingService;
+import company.com.locationfinder.PeriodicServices.LocationUpdatingService;
 import company.com.locationfinder.MainActivity;
 import company.com.locationfinder.R;
 

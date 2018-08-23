@@ -169,9 +169,9 @@ public class BeaconScannerService extends IntentService implements BeaconConsume
                 for(Beacon beacon : beacons) {
                     Log.d(TAG_BEACON_SCAN, "distance: " + beacon.getDistance() + " id:" + beacon.getId1() + "/" + beacon.getId2() + "/" + beacon.getId3());
 //                    beaconsmap.put(beacon.getId2().toInt(),beacon);
-                    BeaconData.addToHashMap(beacon.getId2().toInt(),beacon);
-                    Log.d(TAG_BEACON_SCAN+"map","beacons:"+BeaconData.getBeacons().size());
+//                    BeaconData.addToHashMap(beacon.getId2().toInt(),beacon);
                 }
+                BeaconData.setBeacons(beacons);
             }
         });
 

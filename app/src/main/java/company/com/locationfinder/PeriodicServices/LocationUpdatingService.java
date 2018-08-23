@@ -1,12 +1,10 @@
-package company.com.locationfinder;
+package company.com.locationfinder.PeriodicServices;
 
 import android.app.IntentService;
-import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.altbeacon.beacon.Beacon;
@@ -16,10 +14,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import company.com.locationfinder.BeaconManager.BeaconData;
+import company.com.locationfinder.Constants;
 import company.com.locationfinder.LocationFindingAlgorithm.Coordinate2D;
 import company.com.locationfinder.LocationFindingAlgorithm.LocationFinder;
-
-import static java.lang.Double.NaN;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -64,7 +61,7 @@ public class LocationUpdatingService {
 
         BeaconData.showBeaconData();
 
-        HashMap<Integer, Beacon> allBeacons = BeaconData.getBeacons();
+        HashMap<Integer, Beacon> allBeacons = BeaconData.getFoundBeacons();
 
         double distanceFormB1=allBeacons.containsKey(beacon1Major)?allBeacons.get(beacon1Major).getDistance():0;
         double distanceFormB2=allBeacons.containsKey(beacon2Major)?allBeacons.get(beacon2Major).getDistance():0;

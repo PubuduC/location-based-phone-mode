@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.altbeacon.beacon.Beacon;
+
 import company.com.locationfinder.BeaconManager.BeaconWrapper;
 import company.com.locationfinder.LocationFindingAlgorithm.Util2D;
 import company.com.locationfinder.R;
@@ -20,10 +22,10 @@ import java.util.List;
  */
 public class MyBeaconRecyclerViewAdapter extends RecyclerView.Adapter<MyBeaconRecyclerViewAdapter.ViewHolder> {
 
-    private final List<BeaconWrapper> mValues;
+    private final List<Beacon> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyBeaconRecyclerViewAdapter(List<BeaconWrapper> items, OnListFragmentInteractionListener listener) {
+    public MyBeaconRecyclerViewAdapter(List<Beacon> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -38,11 +40,11 @@ public class MyBeaconRecyclerViewAdapter extends RecyclerView.Adapter<MyBeaconRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.beacon_major.setText(String.valueOf(mValues.get(position).getBeacon().getId2()));
-        holder.beacon_minor.setText(String.valueOf(mValues.get(position).getBeacon().getId3()));
-        holder.beacon_uid.setText(String.valueOf(mValues.get(position).getBeacon().getId1()));
+        holder.beacon_major.setText(String.valueOf(mValues.get(position).getId2()));
+        holder.beacon_minor.setText(String.valueOf(mValues.get(position).getId3()));
+        holder.beacon_uid.setText(String.valueOf(mValues.get(position).getId1()));
 
-        holder.beacon_distance.setText(String.valueOf(Util2D.round3deci(mValues.get(position).getBeacon().getDistance())));
+        holder.beacon_distance.setText(String.valueOf(Util2D.round3deci(mValues.get(position).getDistance())));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +71,7 @@ public class MyBeaconRecyclerViewAdapter extends RecyclerView.Adapter<MyBeaconRe
         public final TextView beacon_uid;
 
 
-        public BeaconWrapper mItem;
+        public Beacon mItem;
 
         public ViewHolder(View view) {
             super(view);

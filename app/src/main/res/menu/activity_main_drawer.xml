@@ -5,6 +5,11 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/addlocation"
+            android:icon="@drawable/ic_add_a_photo_black_24dp"
+            android:title="Add Location" />
+
+        <item
             android:id="@+id/graph"
             android:icon="@drawable/ic_grid_on_black_24dp"
             android:title="Graph" />
@@ -12,7 +17,7 @@
         <item
             android:id="@+id/location_point"
             android:icon="@drawable/ic_location_on_black_24dp"
-            android:title="Location" />
+            android:title="Position" />
 
     </group>
 

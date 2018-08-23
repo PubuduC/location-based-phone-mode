@@ -34,8 +34,8 @@
         <service
             android:name=".BeaconManager.BeaconService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+        <service android:name=".PeriodicServices.RelatedBeaconAreaIdentifier" />
     </application>
-
 
 </manifest>
