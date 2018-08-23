@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import org.altbeacon.beacon.Beacon;
 
 import company.com.locationfinder.BeaconManager.BeaconData;
-import company.com.locationfinder.BeaconManager.BeaconWrapper;
 import company.com.locationfinder.R;
 
 import java.util.ArrayList;
@@ -77,8 +76,8 @@ public class BeaconFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            ArrayList<Beacon> bwrapers = new ArrayList<Beacon>(BeaconData.getFoundBeacons().values());
-            recyclerView.setAdapter(new MyBeaconRecyclerViewAdapter(bwrapers, mListener));
+            ArrayList<BeaconData.BeaconWithLastSeen> beacons = new ArrayList<BeaconData.BeaconWithLastSeen>(BeaconData.getFoundBeacons().values());
+            recyclerView.setAdapter(new MyBeaconRecyclerViewAdapter(beacons, mListener));
         }
         startTimer();
         return view;
@@ -116,7 +115,7 @@ public class BeaconFragment extends Fragment {
      */
     private void updateAndShowData(){
 
-        List<Beacon> beacons = new ArrayList<Beacon>(BeaconData.getFoundBeacons().values());
+        List<BeaconData.BeaconWithLastSeen> beacons = new ArrayList<BeaconData.BeaconWithLastSeen>(BeaconData.getFoundBeacons().values());
 
         recyclerView.setAdapter(new MyBeaconRecyclerViewAdapter(beacons, mListener));
     }
@@ -157,6 +156,6 @@ public class BeaconFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Beacon item);
+        void onListFragmentInteraction(BeaconData.BeaconWithLastSeen item);
     }
 }

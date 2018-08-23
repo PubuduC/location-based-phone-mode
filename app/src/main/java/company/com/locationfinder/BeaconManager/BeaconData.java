@@ -5,6 +5,7 @@ import android.util.Log;
 import org.altbeacon.beacon.Beacon;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -12,47 +13,63 @@ import java.util.TreeMap;
 public class BeaconData {
 
     private static final String TAG = "BeaconData";
-    private static HashMap<Integer,Beacon> beacons=new HashMap<>();
-    private static HashMap<Integer, BeaconWrapper> beaconWrapers=new HashMap<>();
+//    private static HashMap<Integer,Beacon> beacons=new HashMap<>();
+    private static HashMap<Integer,BeaconWithLastSeen> beaconWithLastSeen = new HashMap<>();
+    private static final int BEACON_MAP_CLEANING_INTERVAL=5000;
 
-    public static HashMap<Integer, Beacon> getFoundBeacons() {
-        return beacons;
+    public static HashMap<Integer, BeaconWithLastSeen> getFoundBeacons() {
+        return beaconWithLastSeen;
     }
 
     public static void setBeacons(Collection<Beacon> beacons) {
-        BeaconData.beacons.clear();
+//        BeaconData.beacons.clear();
+        removeLastSeenLimitExceededBeacons();
         for (Beacon beacon: beacons
              ) {
-            BeaconData.beacons.put(beacon.getId2().toInt(),beacon);
+            BeaconWithLastSeen beaconwt=new BeaconWithLastSeen(beacon,System.currentTimeMillis());
+
+            BeaconData.beaconWithLastSeen.put(beacon.getId2().toInt(),beaconwt);
         }
         Log.d("BEACON DATA","beacons:"+BeaconData.getFoundBeacons().size());
     }
 
-    public static HashMap<Integer, BeaconWrapper> getBeaconWrapers() {
-        return beaconWrapers;
-    }
-
-    public static void setBeaconWrapers(HashMap<Integer, BeaconWrapper> beaconWrapers) {
-        BeaconData.beaconWrapers = beaconWrapers;
-    }
 
     public static void showBeaconData(){
-        String data="num of beacons:"+ beacons.size()+"\n";
-        TreeMap<Integer,Beacon> treeMappedBeacons=new TreeMap<>(beacons);
+        String data="num of beacons:"+ beaconWithLastSeen.size()+"\n";
+        TreeMap<Integer,BeaconWithLastSeen> treeMappedBeacons=new TreeMap<>(beaconWithLastSeen);
         for(Map.Entry entry:treeMappedBeacons.entrySet()){
-            data+="key: "+entry.getKey()+"  distance:"+((Beacon)entry.getValue()).getDistance()+"\n";
+            data+="key: "+entry.getKey()+"  distance:"+((BeaconWithLastSeen)entry.getValue()).getBeacon().getDistance()+"\n";
         }
         Log.i(TAG,data);
     }
 
-    public static void addToHashMap(int i, Beacon beacon) {
+    private static void removeLastSeenLimitExceededBeacons(){
+        long now=System.currentTimeMillis();
+        for (Map.Entry beaconwls: beaconWithLastSeen.entrySet()
+             ) {
+            long timegap=(now-((BeaconWithLastSeen)beaconwls.getValue()).getTime());
+            if (timegap>BEACON_MAP_CLEANING_INTERVAL){
+                beaconWithLastSeen.remove(beaconwls.getKey());
+            }
+        }
+    }
 
-        beacons.put(i,beacon);
+    public static class BeaconWithLastSeen{
 
-        // TODO: 6/17/18 check if existing add other attributes to the wraper
-        BeaconWrapper wraper = new BeaconWrapper(beacon);
-        wraper.setKey(i);
-        beaconWrapers.put(i,wraper);
+        public BeaconWithLastSeen(Beacon beacon, long time) {
+            this.beacon = beacon;
+            this.time = time;
+        }
 
+        Beacon beacon;
+        long time;
+
+        public Beacon getBeacon() {
+            return beacon;
+        }
+
+        public long getTime() {
+            return time;
+        }
     }
 }

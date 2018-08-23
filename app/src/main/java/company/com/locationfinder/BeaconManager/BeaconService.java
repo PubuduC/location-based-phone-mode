@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class BeaconService extends Service implements BeaconConsumer {
+
     public BeaconService() {
     }
 

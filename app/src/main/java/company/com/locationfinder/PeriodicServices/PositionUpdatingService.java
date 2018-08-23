@@ -25,7 +25,7 @@ import company.com.locationfinder.LocationFindingAlgorithm.LocationFinder;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class LocationUpdatingService {
+public class PositionUpdatingService {
 
 
 
@@ -47,7 +47,7 @@ public class LocationUpdatingService {
     /////////////////////////////
 
 
-    private static final String TAG = "LocationUpdatingService";
+    private static final String TAG = "PositionUpdatingService";
     private Timer timer;
     private TimerTask timerTask;
     private final Handler handler = new Handler();
@@ -61,11 +61,11 @@ public class LocationUpdatingService {
 
         BeaconData.showBeaconData();
 
-        HashMap<Integer, Beacon> allBeacons = BeaconData.getFoundBeacons();
+        HashMap<Integer, BeaconData.BeaconWithLastSeen> allBeacons = BeaconData.getFoundBeacons();
 
-        double distanceFormB1=allBeacons.containsKey(beacon1Major)?allBeacons.get(beacon1Major).getDistance():0;
-        double distanceFormB2=allBeacons.containsKey(beacon2Major)?allBeacons.get(beacon2Major).getDistance():0;
-        double distanceFormB3=allBeacons.containsKey(beacon3Major)?allBeacons.get(beacon3Major).getDistance():0;
+        double distanceFormB1=allBeacons.containsKey(beacon1Major)?allBeacons.get(beacon1Major).getBeacon().getDistance():0;
+        double distanceFormB2=allBeacons.containsKey(beacon2Major)?allBeacons.get(beacon2Major).getBeacon().getDistance():0;
+        double distanceFormB3=allBeacons.containsKey(beacon3Major)?allBeacons.get(beacon3Major).getBeacon().getDistance():0;
 
         currentLocation= LocationFinder.getLocation(selectedBeaconCoordinates.get(beacon1Major),
                 selectedBeaconCoordinates.get(beacon2Major),selectedBeaconCoordinates.get(beacon3Major),

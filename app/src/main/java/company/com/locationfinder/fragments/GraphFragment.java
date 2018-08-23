@@ -19,7 +19,7 @@ import java.util.TimerTask;
 import company.com.locationfinder.Constants;
 import company.com.locationfinder.Graph.GraphMakerXY;
 import company.com.locationfinder.LocationFindingAlgorithm.Coordinate2D;
-import company.com.locationfinder.PeriodicServices.LocationUpdatingService;
+import company.com.locationfinder.PeriodicServices.PositionUpdatingService;
 import company.com.locationfinder.R;
 
 
@@ -136,7 +136,7 @@ public class GraphFragment extends Fragment {
 
         GraphMakerXY.drawGraph((ScatterChart)view.findViewById(R.id.chart),beacon_1,beacon_2,beacon_3);
 
-        GraphMakerXY.addPoint(new Coordinate2D(LocationUpdatingService.pointX,LocationUpdatingService.pointY));
+        GraphMakerXY.addPoint(new Coordinate2D(PositionUpdatingService.pointX, PositionUpdatingService.pointY));
     }
 
 

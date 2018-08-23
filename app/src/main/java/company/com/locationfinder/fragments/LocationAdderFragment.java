@@ -1,6 +1,7 @@
 package company.com.locationfinder.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,11 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import java.util.List;
-
 import company.com.locationfinder.DatabaseManager.SQLiteDatabaseHandler;
-import company.com.locationfinder.Location;
 import company.com.locationfinder.R;
+import company.com.locationfinder.ScanningQRCodeActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -90,15 +89,15 @@ public class LocationAdderFragment extends Fragment {
     int x=0;
     private void locationAdderOpen(View view) {
 
-        List<Location> allLocations = db.getAllLocations();
+//        List<Location> allLocations = db.getAllLocations();
+//
+//        System.out.println("read:\n"+allLocations.toString());
+//
+//        Location mocklocation=new Location(x++,"mockplace","b1",1,1,"b2",2.0,2,"b3",3,3.3,"none");
+//
+//        db.addLocation(mocklocation);
 
-        System.out.println("read:\n"+allLocations.toString());
-
-        Location mocklocation=new Location(x++,"mockplace","b1",1,1,"b2",2.0,2,"b3",3,3.3,"none");
-
-        db.addLocation(mocklocation);
-
-
+        startActivity(new Intent(getContext(), ScanningQRCodeActivity.class));
 
     }
 

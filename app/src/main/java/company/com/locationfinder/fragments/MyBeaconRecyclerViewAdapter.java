@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import org.altbeacon.beacon.Beacon;
 
-import company.com.locationfinder.BeaconManager.BeaconWrapper;
+import company.com.locationfinder.BeaconManager.BeaconData;
 import company.com.locationfinder.LocationFindingAlgorithm.Util2D;
 import company.com.locationfinder.R;
 import company.com.locationfinder.fragments.BeaconFragment.OnListFragmentInteractionListener;
@@ -16,16 +16,16 @@ import company.com.locationfinder.fragments.BeaconFragment.OnListFragmentInterac
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link BeaconWrapper} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Beacon} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyBeaconRecyclerViewAdapter extends RecyclerView.Adapter<MyBeaconRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Beacon> mValues;
+    private final List<BeaconData.BeaconWithLastSeen> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyBeaconRecyclerViewAdapter(List<Beacon> items, OnListFragmentInteractionListener listener) {
+    public MyBeaconRecyclerViewAdapter(List<BeaconData.BeaconWithLastSeen> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -40,11 +40,11 @@ public class MyBeaconRecyclerViewAdapter extends RecyclerView.Adapter<MyBeaconRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.beacon_major.setText(String.valueOf(mValues.get(position).getId2()));
-        holder.beacon_minor.setText(String.valueOf(mValues.get(position).getId3()));
-        holder.beacon_uid.setText(String.valueOf(mValues.get(position).getId1()));
+        holder.beacon_major.setText(String.valueOf(mValues.get(position).getBeacon().getId2()));
+        holder.beacon_minor.setText(String.valueOf(mValues.get(position).getBeacon().getId3()));
+        holder.beacon_uid.setText(String.valueOf(mValues.get(position).getBeacon().getId1()));
 
-        holder.beacon_distance.setText(String.valueOf(Util2D.round3deci(mValues.get(position).getDistance())));
+        holder.beacon_distance.setText(String.valueOf(Util2D.round3deci(mValues.get(position).getBeacon().getDistance())));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +71,7 @@ public class MyBeaconRecyclerViewAdapter extends RecyclerView.Adapter<MyBeaconRe
         public final TextView beacon_uid;
 
 
-        public Beacon mItem;
+        public BeaconData.BeaconWithLastSeen mItem;
 
         public ViewHolder(View view) {
             super(view);

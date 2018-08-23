@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import company.com.locationfinder.Constants;
-import company.com.locationfinder.PeriodicServices.LocationUpdatingService;
+import company.com.locationfinder.PeriodicServices.PositionUpdatingService;
 import company.com.locationfinder.MainActivity;
 import company.com.locationfinder.R;
 
@@ -272,7 +272,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
 
         Log.d(TAG,"Beacon positions and major keys changed");
 
-        LocationUpdatingService.updateBeaconKeysAndCoordinates();
+        PositionUpdatingService.updateBeaconKeysAndCoordinates();
 
         ((MainActivity)getActivity()).navigateToGraph();
 

@@ -38,7 +38,7 @@ public class RelatedBeaconAreaIdentifier extends Service {
 
     private void runPeriodically() {
 
-        HashMap<Integer, Beacon> foundBeacons = BeaconData.getFoundBeacons();
+        HashMap<Integer, BeaconData.BeaconWithLastSeen> foundBeacons = BeaconData.getFoundBeacons();
 
         if(foundBeacons!=null) {
             List<Location> allRelatedLocations = db.getAllLocations();
@@ -58,7 +58,7 @@ public class RelatedBeaconAreaIdentifier extends Service {
     }
 
 
-    private Location isRelatedArea(HashMap<Integer,Beacon> foundBeacons,List<Location> allRelatedLocations){
+    private Location isRelatedArea(HashMap<Integer,BeaconData.BeaconWithLastSeen> foundBeacons, List<Location> allRelatedLocations){
         for (Location location:allRelatedLocations
              ) {
             int match=0;

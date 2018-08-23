@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -25,20 +24,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.altbeacon.beacon.Beacon;
-import org.altbeacon.beacon.BeaconConsumer;
-import org.altbeacon.beacon.BeaconManager;
-import org.altbeacon.beacon.BeaconParser;
-import org.altbeacon.beacon.MonitorNotifier;
-import org.altbeacon.beacon.RangeNotifier;
-import org.altbeacon.beacon.Region;
-
-import java.util.Collection;
-import java.util.HashMap;
 
 import company.com.locationfinder.BeaconManager.BeaconData;
 import company.com.locationfinder.BeaconManager.BeaconService;
-import company.com.locationfinder.BeaconManager.BeaconWrapper;
-import company.com.locationfinder.PeriodicServices.LocationUpdatingService;
+import company.com.locationfinder.PeriodicServices.PositionUpdatingService;
 import company.com.locationfinder.PeriodicServices.RelatedBeaconAreaIdentifier;
 import company.com.locationfinder.fragments.BeaconFragment;
 import company.com.locationfinder.fragments.GraphFragment;
@@ -47,7 +36,7 @@ import company.com.locationfinder.fragments.LocationPointFragment;
 import company.com.locationfinder.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements BeaconConsumer,
+        implements
 
         NavigationView.OnNavigationItemSelectedListener,
 
@@ -127,7 +116,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void startLocationUpdatingService() {
-        new LocationUpdatingService().init(this);
+        new PositionUpdatingService().init(this);
     }
 
     public void startRelatedBeaconAreaIdentifier(){
@@ -294,89 +283,91 @@ public class MainActivity extends AppCompatActivity
 
 
     ///////////Beacon scanning/////////////
-    private BeaconManager beaconManager;
-    private static final String TAG_BEACON_SCAN ="Beacon Scanner";
-
-    private void setupBeaconScanner(){
-        beaconManager = BeaconManager.getInstanceForApplication(this);
+//    private BeaconManager beaconManager;
+//    private static final String TAG_BEACON_SCAN ="Beacon Scanner";
 //
-        beaconManager.getBeaconParsers().add(new BeaconParser()
-                .setBeaconLayout(BeaconParser.ALTBEACON_LAYOUT));
+//    private void setupBeaconScanner(){
+//        beaconManager = BeaconManager.getInstanceForApplication(this);
+////
+//        beaconManager.getBeaconParsers().add(new BeaconParser()
+//                .setBeaconLayout(BeaconParser.ALTBEACON_LAYOUT));
+////
+//        beaconManager.getBeaconParsers().add(new BeaconParser()
+//                .setBeaconLayout(BeaconParser.EDDYSTONE_URL_LAYOUT));
 //
-        beaconManager.getBeaconParsers().add(new BeaconParser()
-                .setBeaconLayout(BeaconParser.EDDYSTONE_URL_LAYOUT));
-
-        beaconManager.getBeaconParsers().add(new BeaconParser()
-                .setBeaconLayout(BeaconParser.EDDYSTONE_UID_LAYOUT));
-
-
-
-
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
-
-        beaconManager.bind(this);
-    }
-
-    @Override
-    public void onBeaconServiceConnect() {
-//        Identifier.parse("B9407F30-F5F8-466E-AFF9-25556B57FE6D")
-        final Region region = new Region("myBeaons",null, null, null);
-
-        beaconManager.setMonitorNotifier(new MonitorNotifier() {
-            @Override
-            public void didEnterRegion(Region region) {
-                try {
-                    Log.d(TAG_BEACON_SCAN, "didEnterRegion");
-                    beaconManager.startRangingBeaconsInRegion(region);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void didExitRegion(Region region) {
-                try {
-                    Log.d(TAG_BEACON_SCAN, "didExitRegion");
-                    beaconManager.stopRangingBeaconsInRegion(region);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void didDetermineStateForRegion(int i, Region region) {
-
-            }
-        });
+//        beaconManager.getBeaconParsers().add(new BeaconParser()
+//                .setBeaconLayout(BeaconParser.EDDYSTONE_UID_LAYOUT));
 //
-        final HashMap<Integer,Beacon> beaconsmap=new HashMap<>();
-
-        beaconManager.setRangeNotifier(new RangeNotifier() {
-            @Override
-            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-                for(Beacon beacon : beacons) {
-                    Log.d(TAG_BEACON_SCAN, "distance: " + beacon.getDistance() + " id:" + beacon.getId1() + "/" + beacon.getId2() + "/" + beacon.getId3());
-//                    beaconsmap.put(beacon.getId2().toInt(),beacon);
-                    BeaconData.addToHashMap(beacon.getId2().toInt(),beacon);
-                    Log.d(TAG_BEACON_SCAN+"map","beacons:"+BeaconData.getFoundBeacons().size());
-                }
-            }
-        });
-
-        try {
-            beaconManager.startMonitoringBeaconsInRegion(region);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
-    }
-
+//
+//
+//
+//        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
+//        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
+//        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
+//
+//        beaconManager.bind(this);
+//    }
+//
+//    @Override
+//    public void onBeaconServiceConnect() {
+////        Identifier.parse("B9407F30-F5F8-466E-AFF9-25556B57FE6D")
+//        final Region region = new Region("myBeaons",null, null, null);
+//
+//        beaconManager.setMonitorNotifier(new MonitorNotifier() {
+//            @Override
+//            public void didEnterRegion(Region region) {
+//                try {
+//                    Log.d(TAG_BEACON_SCAN, "didEnterRegion");
+//                    beaconManager.startRangingBeaconsInRegion(region);
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void didExitRegion(Region region) {
+//                try {
+//                    Log.d(TAG_BEACON_SCAN, "didExitRegion");
+//                    beaconManager.stopRangingBeaconsInRegion(region);
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void didDetermineStateForRegion(int i, Region region) {
+//
+//            }
+//        });
+////
+//        final HashMap<Integer,Beacon> beaconsmap=new HashMap<>();
+//
+//        beaconManager.setRangeNotifier(new RangeNotifier() {
+//            @Override
+//            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+//                for(Beacon beacon : beacons) {
+//                    Log.d(TAG_BEACON_SCAN, "distance: " + beacon.getDistance() + " id:" + beacon.getId1() + "/" + beacon.getId2() + "/" + beacon.getId3());
+////                    beaconsmap.put(beacon.getId2().toInt(),beacon);
+////                    BeaconData.addToHashMap(beacon.getId2().toInt(),beacon);
+//                }
+//                BeaconData.setBeacons(beacons);
+//            }
+//        });
+//
+//        try {
+//            beaconManager.startMonitoringBeaconsInRegion(region);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+//
 //    @Override
 //    protected void onPause() {
 //        super.onPause();
-//        if (beaconManager.isBound(this)) beaconManager.setBackgroundMode(true);
+//        if (beaconManager!=null){
+//            if (beaconManager.isBound(this)) beaconManager.setBackgroundMode(true);
+//        }
 //    }
 //
     @Override
@@ -393,8 +384,8 @@ public class MainActivity extends AppCompatActivity
 //        beaconManager.unbind(this);
     }
 
-    @Override
-    public void onListFragmentInteraction(Beacon item) {
+            @Override
+            public void onListFragmentInteraction(BeaconData.BeaconWithLastSeen item) {
 
-    }
+            }
         }

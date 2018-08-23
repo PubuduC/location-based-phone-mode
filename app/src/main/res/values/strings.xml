@@ -22,5 +22,7 @@
     <string name="b1_y">b1_y</string>
     <string name="b2_y">b2_y</string>
     <string name="b3_y">b3_y</string>
+    <string name="title_activity_scanning_qrcode">ScanningQRCodeActivity</string>
+    <string name="title_activity_data_view">DataViewActivity</string>
 
 </resources>
