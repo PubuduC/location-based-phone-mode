@@ -108,7 +108,7 @@ public class ScanningQRCodeActivity extends AppCompatActivity {
 //                        txtBarcodeValue.setText("Done");
                         //                      Toast.makeText(getApplicationContext(), "Barcode Detected", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(ScanningQRCodeActivity.this, DataViewActivity.class).putExtra("urldata",intentData));
-
+                        finish();
                     }
                 }
             }

@@ -2,7 +2,9 @@ package company.com.locationfinder;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +20,9 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class DataViewActivity extends AppCompatActivity {
+import company.com.locationfinder.fragments.LocationAdderFragment;
+
+public class DataViewActivity extends AppCompatActivity implements LocationAdderFragment.OnFragmentInteractionListener {
 
     Intent intent;
     String url_str;
@@ -28,6 +32,7 @@ public class DataViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_view);
+
         intent = getIntent();
         url_str = intent.getStringExtra("urldata");
         new JsonTask().execute(url_str);
@@ -40,6 +45,11 @@ public class DataViewActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         qrDataValue.setText(qrDataJSON);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
     private class JsonTask extends AsyncTask<String, String, String> {
@@ -108,6 +118,25 @@ public class DataViewActivity extends AppCompatActivity {
                 pd.dismiss();
             }
             qrDataValue.setText(result);
+
+            Log.d("QRData",result);
+
+
+//            Bundle bundle = new Bundle();
+//            bundle.putString("apidata", result);
+            // set Fragmentclass Arguments
+//            LocationAdderFragment fragobj = new LocationAdderFragment();
+//            fragobj.setArguments(bundle);
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.mainFrame, fragobj);
+//            ft.commit();
+//            finish();
+            Intent intent =new Intent(DataViewActivity.this,MainActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("apidata", result);
+            intent.putExtras(bundle);
+            startActivity(intent);
+            finish();
         }
     }
 }

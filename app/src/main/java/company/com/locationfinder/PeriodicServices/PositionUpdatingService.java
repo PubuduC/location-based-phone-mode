@@ -35,10 +35,10 @@ public class PositionUpdatingService {
     public static float pointY=0;
 
 
-    static int beacon1Major=0;
-    static int beacon2Major=0;
-    static int beacon3Major=0;
-    static HashMap<Integer,Coordinate2D> selectedBeaconCoordinates;
+    static String beacon1Major;
+    static String beacon2Major;
+    static String beacon3Major;
+    static HashMap<String,Coordinate2D> selectedBeaconCoordinates;
 
     static SharedPreferences sharedpreferences;
     /////////////////////////////
@@ -61,24 +61,28 @@ public class PositionUpdatingService {
 
         BeaconData.showBeaconData();
 
-        HashMap<Integer, BeaconData.BeaconWithLastSeen> allBeacons = BeaconData.getFoundBeacons();
+        HashMap<String, BeaconData.BeaconWithLastSeen> allBeacons = BeaconData.getFoundBeacons();
 
-        double distanceFormB1=allBeacons.containsKey(beacon1Major)?allBeacons.get(beacon1Major).getBeacon().getDistance():0;
-        double distanceFormB2=allBeacons.containsKey(beacon2Major)?allBeacons.get(beacon2Major).getBeacon().getDistance():0;
-        double distanceFormB3=allBeacons.containsKey(beacon3Major)?allBeacons.get(beacon3Major).getBeacon().getDistance():0;
+        updateBeaconKeysAndCoordinates();
 
-        currentLocation= LocationFinder.getLocation(selectedBeaconCoordinates.get(beacon1Major),
-                selectedBeaconCoordinates.get(beacon2Major),selectedBeaconCoordinates.get(beacon3Major),
-                distanceFormB1,distanceFormB2,distanceFormB3
-        );
+        if(selectedBeaconCoordinates!=null && selectedBeaconCoordinates.size()>0) {
+            double distanceFormB1 = allBeacons.containsKey(beacon1Major) ? allBeacons.get(beacon1Major).getBeacon().getDistance() : 0;
+            double distanceFormB2 = allBeacons.containsKey(beacon2Major) ? allBeacons.get(beacon2Major).getBeacon().getDistance() : 0;
+            double distanceFormB3 = allBeacons.containsKey(beacon3Major) ? allBeacons.get(beacon3Major).getBeacon().getDistance() : 0;
 
-        if (!Double.isNaN(currentLocation.getX())){
-            pointX=currentLocation.getX();
-            pointY=currentLocation.getY();
+
+            currentLocation = LocationFinder.getLocation(selectedBeaconCoordinates.get(beacon1Major),
+                    selectedBeaconCoordinates.get(beacon2Major), selectedBeaconCoordinates.get(beacon3Major),
+                    distanceFormB1, distanceFormB2, distanceFormB3
+            );
+
+            if (!Double.isNaN(currentLocation.getX())) {
+                pointX = currentLocation.getX();
+                pointY = currentLocation.getY();
+            }
+
+            Log.d(TAG, "point:" + currentLocation.toString());
         }
-
-        Log.d(TAG,"point:"+currentLocation.toString());
-
     }
 
 
@@ -120,32 +124,38 @@ public class PositionUpdatingService {
         timer = null;
     }
 
-    private static HashMap<Integer, Coordinate2D> updateBeaconCoordinatesOfSelected3(){
+    private static HashMap<String, Coordinate2D> updateBeaconCoordinatesOfSelected3(){
 
-        float b1x=sharedpreferences.contains(Constants.b1_x)? readSharedPreferences_float(Constants.b1_x):0;
-        float b1y=sharedpreferences.contains(Constants.b1_y)? readSharedPreferences_float(Constants.b1_y):0;
+        double b1x=RelatedBeaconAreaIdentifier.relatedAreaAround.getBeacon1x();
+        double b1y=RelatedBeaconAreaIdentifier.relatedAreaAround.getBeacon1y();
 
-        float b2x=sharedpreferences.contains(Constants.b2_x)? readSharedPreferences_float(Constants.b2_x):0;
-        float b2y=sharedpreferences.contains(Constants.b2_y)? readSharedPreferences_float(Constants.b2_y):0;
+        double b2x=RelatedBeaconAreaIdentifier.relatedAreaAround.getBeacon2x();
+        double b2y=RelatedBeaconAreaIdentifier.relatedAreaAround.getBeacon2y();
 
-        float b3x=sharedpreferences.contains(Constants.b3_x)? readSharedPreferences_float(Constants.b3_x):0;
-        float b3y=sharedpreferences.contains(Constants.b3_y)? readSharedPreferences_float(Constants.b3_y):0;
+        double b3x=RelatedBeaconAreaIdentifier.relatedAreaAround.getBeacon3x();
+        double b3y=RelatedBeaconAreaIdentifier.relatedAreaAround.getBeacon3y();
 
         selectedBeaconCoordinates=new HashMap<>();
 
         selectedBeaconCoordinates.put(beacon1Major,new Coordinate2D(b1x,b1y));
         selectedBeaconCoordinates.put(beacon2Major,new Coordinate2D(b2x,b2y));
         selectedBeaconCoordinates.put(beacon3Major,new Coordinate2D(b3x,b3y));
+
+        Log.d(TAG,selectedBeaconCoordinates.toString());
         return selectedBeaconCoordinates;
     }
 
 
     public static void updateBeaconKeysAndCoordinates(){
-        beacon1Major=sharedpreferences.contains(Constants.b1_major)? readSharedPreferences_int(Constants.b1_major):0;
-        beacon2Major=sharedpreferences.contains(Constants.b2_major)? readSharedPreferences_int(Constants.b2_major):0;
-        beacon3Major=sharedpreferences.contains(Constants.b3_major)? readSharedPreferences_int(Constants.b3_major):0;
+        if (RelatedBeaconAreaIdentifier.relatedAreaAround!=null) {
+            beacon1Major = RelatedBeaconAreaIdentifier.relatedAreaAround.getBeacon1();
+            beacon2Major =  RelatedBeaconAreaIdentifier.relatedAreaAround.getBeacon2();
+            beacon3Major =  RelatedBeaconAreaIdentifier.relatedAreaAround.getBeacon3();
 
-        updateBeaconCoordinatesOfSelected3();
+            updateBeaconCoordinatesOfSelected3();
+        }else {
+            selectedBeaconCoordinates=null;
+        }
     }
 
 

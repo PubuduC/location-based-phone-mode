@@ -10,6 +10,11 @@
             android:title="Add Location" />
 
         <item
+            android:id="@+id/locations"
+            android:icon="@drawable/ic_account_balance_black_24dp"
+            android:title="Locations" />
+
+        <item
             android:id="@+id/graph"
             android:icon="@drawable/ic_grid_on_black_24dp"
             android:title="Graph" />

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,11 @@ import java.util.TimerTask;
 
 import company.com.locationfinder.BeaconManager.BeaconData;
 import company.com.locationfinder.Constants;
+import company.com.locationfinder.Location;
 import company.com.locationfinder.LocationFindingAlgorithm.Coordinate2D;
 import company.com.locationfinder.LocationFindingAlgorithm.Util2D;
 import company.com.locationfinder.PeriodicServices.PositionUpdatingService;
+import company.com.locationfinder.PeriodicServices.RelatedBeaconAreaIdentifier;
 import company.com.locationfinder.R;
 
 /**
@@ -124,48 +127,51 @@ public class LocationPointFragment extends Fragment {
     }
 
     private void showData()  {
+        Location relatedAreaAround = RelatedBeaconAreaIdentifier.relatedAreaAround;
+        if (relatedAreaAround!=null) {
+            Coordinate2D beacon_1 = new Coordinate2D(relatedAreaAround.getBeacon1x(),
+                    relatedAreaAround.getBeacon1y());
+            String beacon_1_major = relatedAreaAround.getBeacon1();
+            double b1_distance = BeaconData.getFoundBeacons().get(beacon_1_major) == null ? 0 : BeaconData.getFoundBeacons().get(beacon_1_major).getBeacon().getDistance();
 
-        Coordinate2D beacon_1 = new Coordinate2D(readSharedPreferences_float(Constants.b1_x),
-                readSharedPreferences_float(Constants.b1_y));
-        int beacon_1_major=readSharedPreferences_int(Constants.b1_major);
-        double b1_distance= BeaconData.getFoundBeacons().get(beacon_1_major)==null? 0:BeaconData.getFoundBeacons().get(beacon_1_major).getBeacon().getDistance();
+            Coordinate2D beacon_2 = new Coordinate2D(relatedAreaAround.getBeacon2x(),
+                    relatedAreaAround.getBeacon2y());
+            String beacon_2_major = relatedAreaAround.getBeacon2();
+            double b2_distance = BeaconData.getFoundBeacons().get(beacon_2_major) == null ? 0 : BeaconData.getFoundBeacons().get(beacon_2_major).getBeacon().getDistance();
 
-        Coordinate2D beacon_2 = new Coordinate2D(readSharedPreferences_float(Constants.b2_x),
-                readSharedPreferences_float(Constants.b2_y));
-        int beacon_2_major=readSharedPreferences_int(Constants.b2_major);
-        double b2_distance= BeaconData.getFoundBeacons().get(beacon_2_major)==null? 0:BeaconData.getFoundBeacons().get(beacon_2_major).getBeacon().getDistance();
+            Coordinate2D beacon_3 = new Coordinate2D(relatedAreaAround.getBeacon3x(),
+                    relatedAreaAround.getBeacon3y());
+            String beacon_3_major = relatedAreaAround.getBeacon3();
+            double b3_distance = BeaconData.getFoundBeacons().get(beacon_3_major) == null ? 0 : BeaconData.getFoundBeacons().get(beacon_3_major).getBeacon().getDistance();
 
-        Coordinate2D beacon_3 = new Coordinate2D(readSharedPreferences_float(Constants.b3_x),
-                readSharedPreferences_float(Constants.b3_y));
-        int beacon_3_major=readSharedPreferences_int(Constants.b3_major);
-        double b3_distance= BeaconData.getFoundBeacons().get(beacon_3_major)==null? 0:BeaconData.getFoundBeacons().get(beacon_3_major).getBeacon().getDistance();
+            Log.d("LPF", b1_distance + " " + b2_distance + " " + b3_distance + " " + BeaconData.getFoundBeacons().containsKey(beacon_3_major));
+            Log.d("LPF", BeaconData.getFoundBeacons().toString());
+        //        String data="";
+        //
+        //       data+="beacon 1 :  ["+beacon_1.toRoundedString()+"]" + "  d="+ Util2D.round3deci(b1_distance)+"m\n\n";
+        //       data+="beacon 2 :  ["+beacon_2.toRoundedString()+"]" + "  d="+Util2D.round3deci(b2_distance)+"m\n\n";
+        //       data+="beacon 3 :  ["+beacon_3.toRoundedString()+"]" + "  d="+Util2D.round3deci(b3_distance)+"m\n\n";
+        //
+        //           data += "point : x=" + PositionUpdatingService.pointX;
+        //           data += "  y=" + PositionUpdatingService.pointY;
+        //
+        //
+        //        textView.setText(String.valueOf(data));
 
-//        String data="";
-//
-//       data+="beacon 1 :  ["+beacon_1.toRoundedString()+"]" + "  d="+ Util2D.round3deci(b1_distance)+"m\n\n";
-//       data+="beacon 2 :  ["+beacon_2.toRoundedString()+"]" + "  d="+Util2D.round3deci(b2_distance)+"m\n\n";
-//       data+="beacon 3 :  ["+beacon_3.toRoundedString()+"]" + "  d="+Util2D.round3deci(b3_distance)+"m\n\n";
-//
-//           data += "point : x=" + PositionUpdatingService.pointX;
-//           data += "  y=" + PositionUpdatingService.pointY;
-//
-//
-//        textView.setText(String.valueOf(data));
+            ((TextView) view.findViewById(R.id.b1_X)).setText(String.valueOf(Util2D.round3deci(beacon_1.getX())));
+            ((TextView) view.findViewById(R.id.b1_Y)).setText(String.valueOf(Util2D.round3deci(beacon_1.getY())));
+            ((TextView) view.findViewById(R.id.b1_d)).setText(String.valueOf(Util2D.round3deci(b1_distance)));
 
-        ((TextView)view.findViewById(R.id.b1_X)).setText(String.valueOf(Util2D.round3deci(beacon_1.getX())));
-        ((TextView)view.findViewById(R.id.b1_Y)).setText(String.valueOf(Util2D.round3deci(beacon_1.getY())));
-        ((TextView)view.findViewById(R.id.b1_d)).setText(String.valueOf(Util2D.round3deci(b1_distance)));
+            ((TextView) view.findViewById(R.id.b2_X)).setText(String.valueOf(Util2D.round3deci(beacon_2.getX())));
+            ((TextView) view.findViewById(R.id.b2_Y)).setText(String.valueOf(Util2D.round3deci(beacon_2.getY())));
+            ((TextView) view.findViewById(R.id.b2_d)).setText(String.valueOf(Util2D.round3deci(b2_distance)));
 
-        ((TextView)view.findViewById(R.id.b2_X)).setText(String.valueOf(Util2D.round3deci(beacon_2.getX())));
-        ((TextView)view.findViewById(R.id.b2_Y)).setText(String.valueOf(Util2D.round3deci(beacon_2.getY())));
-        ((TextView)view.findViewById(R.id.b2_d)).setText(String.valueOf(Util2D.round3deci(b2_distance)));
+            ((TextView) view.findViewById(R.id.b3_X)).setText(String.valueOf(Util2D.round3deci(beacon_3.getX())));
+            ((TextView) view.findViewById(R.id.b3_Y)).setText(String.valueOf(Util2D.round3deci(beacon_3.getY())));
+            ((TextView) view.findViewById(R.id.b3_d)).setText(String.valueOf(Util2D.round3deci(b3_distance)));
 
-        ((TextView)view.findViewById(R.id.b3_X)).setText(String.valueOf(Util2D.round3deci(beacon_3.getX())));
-        ((TextView)view.findViewById(R.id.b3_Y)).setText(String.valueOf(Util2D.round3deci(beacon_3.getY())));
-        ((TextView)view.findViewById(R.id.b3_d)).setText(String.valueOf(Util2D.round3deci(b3_distance)));
-
-        ((TextView)view.findViewById(R.id.point)).setText("X= "+ PositionUpdatingService.pointX+" , Y= "+ PositionUpdatingService.pointY);
-
+            ((TextView) view.findViewById(R.id.point)).setText("X= " + PositionUpdatingService.pointX + " , Y= " + PositionUpdatingService.pointY);
+        }
     }
 
 

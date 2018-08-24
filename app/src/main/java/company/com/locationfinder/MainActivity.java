@@ -3,6 +3,9 @@ package company.com.locationfinder;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,14 +27,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.altbeacon.beacon.Beacon;
+import org.json.JSONObject;
 
 import company.com.locationfinder.BeaconManager.BeaconData;
 import company.com.locationfinder.BeaconManager.BeaconService;
+import company.com.locationfinder.DatabaseManager.SQLiteDatabaseHandler;
 import company.com.locationfinder.PeriodicServices.PositionUpdatingService;
 import company.com.locationfinder.PeriodicServices.RelatedBeaconAreaIdentifier;
 import company.com.locationfinder.fragments.BeaconFragment;
 import company.com.locationfinder.fragments.GraphFragment;
 import company.com.locationfinder.fragments.LocationAdderFragment;
+import company.com.locationfinder.fragments.LocationFragment;
 import company.com.locationfinder.fragments.LocationPointFragment;
 import company.com.locationfinder.fragments.SettingsFragment;
 
@@ -44,7 +50,9 @@ public class MainActivity extends AppCompatActivity
         LocationPointFragment.OnFragmentInteractionListener,
         BeaconFragment.OnListFragmentInteractionListener,
         SettingsFragment.OnFragmentInteractionListener,
-        LocationAdderFragment.OnFragmentInteractionListener
+        LocationAdderFragment.OnFragmentInteractionListener,
+        LocationFragment.OnListFragmentInteractionListener
+
         {
 
 
@@ -59,6 +67,7 @@ public class MainActivity extends AppCompatActivity
     public NavigationView navigationView;
 
 
+    private SQLiteDatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,18 +95,75 @@ public class MainActivity extends AppCompatActivity
 
         //NOTE:  Open fragment1 initially.
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.mainFrame, new GraphFragment());
+        ft.replace(R.id.mainFrame, new LocationAdderFragment());
         ft.commit();
 
 
 
         getPermission();
 
+        bluetoothStartup();
+
         startBeaconScanningService();
 
         startLocationUpdatingService();
 
         startRelatedBeaconAreaIdentifier();
+
+        Intent intentex=getIntent();
+
+        db=new SQLiteDatabaseHandler(this);
+
+        if (intentex.getExtras()!=null){
+            String data=intentex.getExtras().getString("apidata");
+            saveLocationDataWithMode(data);
+        }
+
+    }
+
+    private final static int REQUEST_ENABLE_BT = 1;
+
+    private void bluetoothStartup(){
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter.isEnabled()) {
+            mBluetoothAdapter.disable();
+        }
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+    }
+
+    private void saveLocationDataWithMode(String data){
+        try {
+
+            JSONObject obj = new JSONObject(data);
+
+            Location location=new Location(
+                    obj.getInt("id"),
+                    obj.getString("place"),
+                    obj.getJSONObject("beacon1").getString("uuid"),
+                    obj.getJSONObject("beacon1").getDouble("x"),
+                    obj.getJSONObject("beacon1").getDouble("y"),
+                    obj.getJSONObject("beacon2").getString("uuid"),
+                    obj.getJSONObject("beacon2").getDouble("x"),
+                    obj.getJSONObject("beacon2").getDouble("y"),
+                    obj.getJSONObject("beacon3").getString("uuid"),
+                    obj.getJSONObject("beacon3").getDouble("x"),
+                    obj.getJSONObject("beacon3").getDouble("y"),
+                    "silent"
+            );
+
+            Log.d("Location obj",location.toString());
+
+            db.addLocation(location);
+
+        } catch (Throwable t) {
+
+            t.printStackTrace();
+
+        }
+
 
     }
 
@@ -141,6 +207,17 @@ public class MainActivity extends AppCompatActivity
                 });
                 builder.show();
             }
+            NotificationManager notificationManager =
+                    (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if(!notificationManager.isNotificationPolicyAccessGranted()) {
+
+                Intent intent = new Intent(
+                        android.provider.Settings
+                                .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+
+                startActivity(intent);
+            }
         }
     }
 
@@ -168,6 +245,9 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
+
+
 
     public void navigateToGraph(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -229,6 +309,9 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.addlocation){
             fragment = new LocationAdderFragment();
+
+        } else if (id == R.id.locations){
+            fragment =new LocationFragment();
         }
 
         if (fragment != null) {
@@ -386,6 +469,12 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onListFragmentInteraction(BeaconData.BeaconWithLastSeen item) {
+
+            }
+
+            @Override
+            public void onListFragmentInteraction(Location item) {
+
 
             }
         }

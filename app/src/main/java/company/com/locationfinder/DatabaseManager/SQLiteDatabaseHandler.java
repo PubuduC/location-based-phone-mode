@@ -34,7 +34,6 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper{
     private static final String BEACON3_X = "beacon3x";
     private static final String BEACON3_Y = "beacon3y";
 
-
     private static final String CHANGING_MODE = "mode";
 
     private static final String[] COLUMNS = { ID, PLACE,

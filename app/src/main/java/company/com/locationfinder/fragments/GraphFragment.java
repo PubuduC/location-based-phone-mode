@@ -18,8 +18,10 @@ import java.util.TimerTask;
 
 import company.com.locationfinder.Constants;
 import company.com.locationfinder.Graph.GraphMakerXY;
+import company.com.locationfinder.Location;
 import company.com.locationfinder.LocationFindingAlgorithm.Coordinate2D;
 import company.com.locationfinder.PeriodicServices.PositionUpdatingService;
+import company.com.locationfinder.PeriodicServices.RelatedBeaconAreaIdentifier;
 import company.com.locationfinder.R;
 
 
@@ -77,20 +79,22 @@ public class GraphFragment extends Fragment {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_graph, container, false);
 
+        Location relatedAreaAround = RelatedBeaconAreaIdentifier.relatedAreaAround;
 
+        if (relatedAreaAround!=null) {
 
-        //adding chart
-        Coordinate2D beacon_1 = new Coordinate2D(readSharedPreferences_float(Constants.b1_x),
-                readSharedPreferences_float(Constants.b1_y));
+            //adding chart
+            Coordinate2D beacon_1 = new Coordinate2D(relatedAreaAround.getBeacon1x(),
+                    relatedAreaAround.getBeacon1y());
 
-        Coordinate2D beacon_2 = new Coordinate2D(readSharedPreferences_float(Constants.b2_x),
-                readSharedPreferences_float(Constants.b2_y));
+            Coordinate2D beacon_2 = new Coordinate2D(relatedAreaAround.getBeacon2x(),
+                    relatedAreaAround.getBeacon2y());
 
-        Coordinate2D beacon_3 = new Coordinate2D(readSharedPreferences_float(Constants.b3_x),
-                readSharedPreferences_float(Constants.b3_y));
+            Coordinate2D beacon_3 = new Coordinate2D(relatedAreaAround.getBeacon3x(),
+                    relatedAreaAround.getBeacon3y());
 
-        GraphMakerXY.drawGraph((ScatterChart)view.findViewById(R.id.chart),beacon_1,beacon_2,beacon_3);
-
+            GraphMakerXY.drawGraph((ScatterChart) view.findViewById(R.id.chart), beacon_1, beacon_2, beacon_3);
+        }
         startTimer();
 
         return view;
@@ -124,19 +128,23 @@ public class GraphFragment extends Fragment {
 
     private void showPoint(){
 
+        Location relatedAreaAround = RelatedBeaconAreaIdentifier.relatedAreaAround;
 
-        Coordinate2D beacon_1 = new Coordinate2D(readSharedPreferences_float(Constants.b1_x),
-                readSharedPreferences_float(Constants.b1_y));
+        if (relatedAreaAround!=null) {
+            Coordinate2D beacon_1 = new Coordinate2D(relatedAreaAround.getBeacon1x(),
+                    relatedAreaAround.getBeacon1y());
 
-        Coordinate2D beacon_2 = new Coordinate2D(readSharedPreferences_float(Constants.b2_x),
-                readSharedPreferences_float(Constants.b2_y));
+            Coordinate2D beacon_2 = new Coordinate2D(relatedAreaAround.getBeacon2x(),
+                    relatedAreaAround.getBeacon2y());
 
-        Coordinate2D beacon_3 = new Coordinate2D(readSharedPreferences_float(Constants.b3_x),
-                readSharedPreferences_float(Constants.b3_y));
+            Coordinate2D beacon_3 = new Coordinate2D(relatedAreaAround.getBeacon3x(),
+                    relatedAreaAround.getBeacon3y());
 
-        GraphMakerXY.drawGraph((ScatterChart)view.findViewById(R.id.chart),beacon_1,beacon_2,beacon_3);
 
-        GraphMakerXY.addPoint(new Coordinate2D(PositionUpdatingService.pointX, PositionUpdatingService.pointY));
+            GraphMakerXY.drawGraph((ScatterChart) view.findViewById(R.id.chart), beacon_1, beacon_2, beacon_3);
+
+            GraphMakerXY.addPoint(new Coordinate2D(PositionUpdatingService.pointX, PositionUpdatingService.pointY));
+        }
     }
 
 

@@ -7,6 +7,7 @@ import org.altbeacon.beacon.Beacon;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -14,10 +15,10 @@ public class BeaconData {
 
     private static final String TAG = "BeaconData";
 //    private static HashMap<Integer,Beacon> beacons=new HashMap<>();
-    private static HashMap<Integer,BeaconWithLastSeen> beaconWithLastSeen = new HashMap<>();
-    private static final int BEACON_MAP_CLEANING_INTERVAL=5000;
+    private static volatile HashMap<String,BeaconWithLastSeen> beaconWithLastSeen = new HashMap<>();
+    private static final int BEACON_MAP_CLEANING_INTERVAL=4000;
 
-    public static HashMap<Integer, BeaconWithLastSeen> getFoundBeacons() {
+    public static HashMap<String, BeaconWithLastSeen> getFoundBeacons() {
         return beaconWithLastSeen;
     }
 
@@ -28,7 +29,7 @@ public class BeaconData {
              ) {
             BeaconWithLastSeen beaconwt=new BeaconWithLastSeen(beacon,System.currentTimeMillis());
 
-            BeaconData.beaconWithLastSeen.put(beacon.getId2().toInt(),beaconwt);
+            BeaconData.beaconWithLastSeen.put(beacon.getId2().toString(),beaconwt);
         }
         Log.d("BEACON DATA","beacons:"+BeaconData.getFoundBeacons().size());
     }
@@ -36,7 +37,7 @@ public class BeaconData {
 
     public static void showBeaconData(){
         String data="num of beacons:"+ beaconWithLastSeen.size()+"\n";
-        TreeMap<Integer,BeaconWithLastSeen> treeMappedBeacons=new TreeMap<>(beaconWithLastSeen);
+        TreeMap<String,BeaconWithLastSeen> treeMappedBeacons=new TreeMap<>(beaconWithLastSeen);
         for(Map.Entry entry:treeMappedBeacons.entrySet()){
             data+="key: "+entry.getKey()+"  distance:"+((BeaconWithLastSeen)entry.getValue()).getBeacon().getDistance()+"\n";
         }
@@ -45,13 +46,24 @@ public class BeaconData {
 
     private static void removeLastSeenLimitExceededBeacons(){
         long now=System.currentTimeMillis();
-        for (Map.Entry beaconwls: beaconWithLastSeen.entrySet()
-             ) {
-            long timegap=(now-((BeaconWithLastSeen)beaconwls.getValue()).getTime());
+        Iterator it = beaconWithLastSeen.entrySet().iterator();
+        while (it.hasNext())
+        {
+            Map.Entry item = (Map.Entry) it.next();
+            long timegap=(now-((BeaconWithLastSeen)item.getValue()).getTime());
             if (timegap>BEACON_MAP_CLEANING_INTERVAL){
-                beaconWithLastSeen.remove(beaconwls.getKey());
+                it.remove();
             }
+
         }
+
+//        for (Map.Entry beaconwls: beaconWithLastSeen.entrySet()
+//             ) {
+//            long timegap=(now-((BeaconWithLastSeen)beaconwls.getValue()).getTime());
+//            if (timegap>BEACON_MAP_CLEANING_INTERVAL){
+//                beaconWithLastSeen.remove(beaconwls.getKey());
+//            }
+//        }
     }
 
     public static class BeaconWithLastSeen{
