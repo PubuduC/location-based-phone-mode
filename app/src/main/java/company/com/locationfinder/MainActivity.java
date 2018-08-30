@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity
         GraphFragment.OnFragmentInteractionListener,
         LocationPointFragment.OnFragmentInteractionListener,
         BeaconFragment.OnListFragmentInteractionListener,
-        SettingsFragment.OnFragmentInteractionListener,
         LocationAdderFragment.OnFragmentInteractionListener,
         LocationFragment.OnListFragmentInteractionListener
 
@@ -95,7 +94,7 @@ public class MainActivity extends AppCompatActivity
 
         //NOTE:  Open fragment1 initially.
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.mainFrame, new LocationAdderFragment());
+        ft.replace(R.id.mainFrame, new GraphFragment());
         ft.commit();
 
 
@@ -301,9 +300,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.location_point) {
             fragment=new LocationPointFragment();
 
-        } else if (id == R.id.beacon_setup) {
-            fragment = new SettingsFragment();
-
         } else if (id == R.id.check_beacons) {
             fragment = new BeaconFragment();
 
@@ -459,6 +455,7 @@ public class MainActivity extends AppCompatActivity
 //        if (beaconManager.isBound(this)) beaconManager.setBackgroundMode(false);
 //        else beaconManager.bind(this);
         startService(new Intent(this, BeaconService.class));
+        bluetoothStartup();
     }
 
     @Override
